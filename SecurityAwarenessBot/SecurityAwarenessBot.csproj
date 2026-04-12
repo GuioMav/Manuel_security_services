@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>SecurityAwarenessBot</AssemblyName>
@@ -17,7 +17,7 @@
       It is cross-platform at the package level; the AudioPlayer class uses a
       RuntimeInformation.IsOSPlatform(Windows) guard so it is only CALLED on Windows.
     -->
-    <PackageReference Include="System.Windows.Extensions" Version="6.0.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="10.0.0" />
   </ItemGroup>
 
 </Project>
