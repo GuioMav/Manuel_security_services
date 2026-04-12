@@ -1,0 +1,37 @@
+## Visual Studio / Rider files
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build output
+[Bb]in/
+[Oo]bj/
+publish/
+/build/
+
+## NuGet packages
+*.nupkg
+*.snupkg
+.nuget/packages/
+packages/
+project.lock.json
+project.fragment.lock.json
+
+## dotnet publish artefacts
+/publish/
+
+## Logs
+*.log
+*.tlog
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+## Audio generated at runtime (excluded from source control)
+SecurityAwarenessBot/Audio/welcome.wav
