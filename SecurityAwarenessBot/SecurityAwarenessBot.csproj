@@ -11,6 +11,13 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
 
-  <!-- No extra NuGet packages needed — all APIs are part of .NET 6 BCL -->
+  <ItemGroup>
+    <!--
+      System.Media.SoundPlayer was moved out of the .NET 6 BCL into this package.
+      It is cross-platform at the package level; the AudioPlayer class uses a
+      RuntimeInformation.IsOSPlatform(Windows) guard so it is only CALLED on Windows.
+    -->
+    <PackageReference Include="System.Windows.Extensions" Version="6.0.0" />
+  </ItemGroup>
 
 </Project>
