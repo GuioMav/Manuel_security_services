@@ -1,8 +1,8 @@
-# 🛡️ Monkey Bot — Cybersecurity Awareness Chatbot
+# 🛡️ Manuel security services MSS
 
-[![Build and Validate](https://github.com/<YOUR_USERNAME>/security_awareness_bot/actions/workflows/ci.yml/badge.svg)](https://github.com/<YOUR_USERNAME>/security_awareness_bot/actions/workflows/ci.yml)
+[![Build and Validate](https://github.com/GuioMav/Manuel_security_services/actions/workflows/ci.yml/badge.svg)](https://github.com/GuioMav/Manuel_security_services/actions/workflows/ci.yml)
 
-> A C# console application developed for the South African Department of Cybersecurity's public education campaign. Monkey Bot educates citizens on **phishing**, **password safety**, and **suspicious links** through an engaging, interactive conversational interface.
+> A C# console application developed for the South African Department of Cybersecurity's public education campaign. Manuel security services MSS educates citizens on **phishing**, **password safety**, and **suspicious links** through an engaging, interactive conversational interface.
 
 ---
 
@@ -10,7 +10,7 @@
 
 | Feature | Description |
 |---|---|
-| 🎨 ASCII Art Logo | Monkey Bot banner rendered in colour on launch |
+| 🎨 ASCII Art Logo | Manuel security services MSS banner rendered in colour on launch |
 | 🔊 Welcome Audio | Plays a WAV welcome tone on startup (Windows) |
 | ⌨️ Typing Effect | Characters appear one-by-one via `Task.Delay` for an authentic chat feel |
 | 🎨 Colour Theming | `ForegroundColor` changes categorise message types |
@@ -88,7 +88,7 @@ Once running, type any of the following keywords (or related phrases) to explore
 | `password` | Strong password guidance and recommended tools |
 | `links` | Identifying suspicious URLs & what to do after clicking one |
 | `tips` | General cybersecurity hygiene for South Africans |
-| `purpose` | What Monkey Bot is and how it protects your privacy |
+| `purpose` | What Manuel security services MSS is and how it protects your privacy |
 | `quiz` | Start a 5-question cybersecurity knowledge challenge |
 | `help` | Display the full topic menu |
 | `exit` | Gracefully end your session |
@@ -109,7 +109,7 @@ Centralises **all** console output:
 - `SetColour()` / `WriteColoured()` — `Console.ForegroundColor` management
 - `TypeWriteAsync()` — typewriter effect using `await Task.Delay(delayMs)`
 - `DrawBorder()` / `DrawBox()` — unicode box-drawing characters
-- `DisplayLogo()` — multi-colour ASCII art (Mankey Bot)
+- `DisplayLogo()` — multi-colour ASCII art (Manuel security services MSS)
 - `PrintHelpMenu()` / `PrintWarning()` / `PrintSuccess()` — status helpers
 
 ### `InputValidator.cs` — Validation
@@ -144,7 +144,7 @@ The workflow at `.github/workflows/ci.yml` triggers on every `push` and `pull_re
 
 ## 🔐 Privacy Statement
 
-Monkey Bot does **not** collect, store, or transmit any personal information. All data (your name and session details) exists only in memory for the duration of the session and is discarded on exit.
+Manuel security services MSS does **not** collect, store, or transmit any personal information. All data (your name and session details) exists only in memory for the duration of the session and is discarded on exit.
 
 ---
 
@@ -166,4 +166,4 @@ This project follows a highly granular development process with **26 commits**, 
 
 ---
 
-*Built with ❤️ for South Africa — Monkey Bot, PROG6211, 2024*
+*Built with ❤️ for South Africa — Manuel security services MSS, PROG6211, 2024*
