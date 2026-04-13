@@ -54,8 +54,8 @@ SecurityAwarenessBot/
 
 ### Prerequisites
 
-- [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) or later
-- JetBrains Rider, Visual Studio 2022+, or VS Code with C# Dev Kit
+- [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) or later
+- JetBrains Rider 2024+, Visual Studio 2022+, or VS Code with C# Dev Kit
 
 ### Run from Rider
 
@@ -82,16 +82,34 @@ dotnet build SecurityAwarenessBot.csproj --configuration Release
 
 Once running, type any of the following keywords (or related phrases) to explore topics:
 
-| Keyword | Topic |
+| Keyword / Phrase | Topic |
 |---|---|
-| `phishing` | Learn about phishing scams, red flags, and how to report them |
-| `password` | Strong password guidance and recommended tools |
-| `links` | Identifying suspicious URLs & what to do after clicking one |
-| `tips` | General cybersecurity hygiene for South Africans |
-| `purpose` | What Manuel security services MSS is and how it protects your privacy |
-| `quiz` | Start a 5-question cybersecurity knowledge challenge |
-| `help` | Display the full topic menu |
-| `exit` | Gracefully end your session |
+| `hello` / `hi` / `hey` | Friendly greetings |
+| `how are you?` | Small talk / Bot status |
+| `who are you?` / `purpose` | Bot introduction and privacy policy |
+| `phishing` / `scam` | Detailed phishing awareness and reporting |
+| `password` / `login` | Modern password safety and tool advice |
+| `links` / `site` / `url` | How to safely verify and click links |
+| `tips` / `protect` | General cybersecurity hygiene for SA citizens |
+| `quiz` / `trivia` | Start the 5-question challenge |
+| `help` / `?` / `menu` | View the full topics menu |
+| `exit` / `quit` / `bye` | Gracefully end your session |
+
+> **Pro Tip:** The bot uses keyword classification, so you can type full sentences like *"Tell me about phishing"* or *"How do I pick a safe password?"* and it will understand!
+
+### 🧪 Interactive Testing Guide
+
+Use the following questions to verify the bot's conversational capabilities:
+
+| Intent | Sample Question to Type | Expected Response Keyword |
+|---|---|---|
+| **Identity** | *"Who are you and what do you do?"* | Bot purpose & privacy policy |
+| **Small Talk** | *"How are you doing today?"* | Personalized friendly greeting |
+| **Phishing** | *"How do I spot a fake email scam?"* | Red flags and reporting steps |
+| **Passwords** | *"Can you help me make a strong password?"* | Credentials & length guidance |
+| **Links** | *"Should I click on a suspicious link?"* | URL verification and safety |
+| **Advice** | *"Give me some general security tips"* | Multi-layered hygiene advice |
+| **Assessment**| *"I want to take the cybersecurity quiz"* | Interactive 5-question logic |
 
 ---
 
@@ -135,7 +153,7 @@ Centralises **all** console output:
 The workflow at `.github/workflows/ci.yml` triggers on every `push` and `pull_request`:
 
 1. **Checkout** repository
-2. **Setup .NET 6** via `actions/setup-dotnet@v3`
+2. **Setup .NET 10** via `actions/setup-dotnet@v4`
 3. **Restore** packages
 4. **Build** in Release mode
 5. **Publish** to confirm no missing assets
