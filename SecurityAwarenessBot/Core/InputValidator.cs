@@ -69,8 +69,8 @@ public static class InputValidator
     /// </summary>
     /// <param name="userName">The user's display name for personalisation.</param>
     public static string GetFallbackMessage(string userName = "Citizen") =>
-        $"I'm sorry, {userName}, I didn't quite understand that.\n" +
-        "  Try typing one of the following:\n" +
+        $"I'm sorry, {userName}, I didn't quite understand that. Could you rephrase?\n" +
+        "  Alternatively, try typing one of the following keywords:\n" +
         "  • 'phishing'  to learn about phishing scams\n" +
         "  • 'password'  for password safety advice\n" +
         "  • 'links'     for tips on spotting suspicious links\n" +

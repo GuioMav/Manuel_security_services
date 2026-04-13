@@ -176,6 +176,20 @@ public static class ResponseLibrary
         "\n" +
         "  Type 'help' to explore all available topics, or simply ask me anything!\n";
 
+    // ── 5b. Small Talk ────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Returns friendly, professional responses for greetings and health checks.
+    /// </summary>
+    public static string GetSmallTalkResponse(string userName = "Citizen") =>
+        $"I am doing very well, {userName}, thank you for asking!\n" +
+        "\n" +
+        "  As an AI security assistant, I don't have feelings, but I am fully\n" +
+        "  operational and ready to help you strengthen your digital defences.\n" +
+        "\n" +
+        "  Is there a specific cybersecurity topic you'd like to discuss?\n" +
+        "  (e.g., passwords, phishing, or suspicious links)";
+
     // ── 6. Quiz Introduction ──────────────────────────────────────────────────
 
     /// <summary>

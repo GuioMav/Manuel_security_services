@@ -29,6 +29,7 @@ public enum Topic
     QuizAnswer,
     Help,
     Exit,
+    SmallTalk,
     Unknown
 }
 
@@ -113,6 +114,7 @@ public class ChatEngine
             Topic.Purpose         => ResponseLibrary.GetPurposeResponse(_user.Name),
             Topic.Tips            => ResponseLibrary.GetGeneralTipsResponse(_user.Name),
             Topic.Quiz            => StartOrAdvanceQuiz(),
+            Topic.SmallTalk       => ResponseLibrary.GetSmallTalkResponse(_user.Name),
             _                     => InputValidator.GetFallbackMessage(_user.Name)
         };
     }
@@ -151,8 +153,13 @@ public class ChatEngine
             return Topic.Tips;
 
         if (sanitisedInput.ContainsAny(
-                "quiz", "test", "question", "challenge", "trivia"))
+                "quiz", "test", "challenge", "trivia"))
             return Topic.Quiz;
+
+        if (sanitisedInput.ContainsAny(
+                "how are you", "how's it going", "how are things",
+                "hello", "hi", "hey", "greetings", "good morning", "good day"))
+            return Topic.SmallTalk;
 
         return Topic.Unknown;
     }
