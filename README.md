@@ -166,4 +166,4 @@ This project follows a highly granular development process with **26 commits**, 
 
 ---
 
-*Built with ❤️ for South Africa — Manuel security services MSS, PROG6211, 2024*
+*Built with ❤️ Manuel security services MSS, PROG6211, 2026*
