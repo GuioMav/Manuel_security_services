@@ -1,5 +1,5 @@
 // ============================================================
-//  CyberShield SA — Cybersecurity Awareness Chatbot
+//  Monkey Bot — Cybersecurity Awareness Chatbot
 //  Models/User.cs
 //  Represents a chatbot session user with automatic properties
 //  for personalisation throughout the conversation.

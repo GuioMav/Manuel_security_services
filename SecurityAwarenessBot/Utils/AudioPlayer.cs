@@ -1,5 +1,5 @@
 // ============================================================
-//  CyberShield SA — Cybersecurity Awareness Chatbot
+//  Monkey Bot — Cybersecurity Awareness Chatbot
 //  Utils/AudioPlayer.cs
 //  Wraps System.Media.SoundPlayer for welcome audio playback.
 //

@@ -1,5 +1,5 @@
 // ============================================================
-//  CyberShield SA — Cybersecurity Awareness Chatbot
+//  Monkey Bot — Cybersecurity Awareness Chatbot
 //  Core/ResponseLibrary.cs
 //  Static library of educational response strings covering:
 //    • Phishing awareness
@@ -156,7 +156,7 @@ public static class ResponseLibrary
     public static string GetPurposeResponse(string userName = "Citizen") =>
         $"Hello, {userName}! Here's a bit about me:\n" +
         "\n" +
-        "  I am CyberShield SA — a cybersecurity awareness chatbot built to support\n" +
+        "  I am Monkey Bot — a cybersecurity awareness chatbot built to support\n" +
         "  the South African Department of Cybersecurity's public education campaign.\n" +
         "\n" +
         "  ✔  My purpose:\n" +

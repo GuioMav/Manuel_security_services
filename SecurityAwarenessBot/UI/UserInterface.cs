@@ -1,5 +1,5 @@
 // ============================================================
-//  CyberShield SA — Cybersecurity Awareness Chatbot
+//  Monkey Bot — Cybersecurity Awareness Chatbot
 //  UI/UserInterface.cs
 //  Centralises all console presentation logic:
 //    • Colour helpers (ForegroundColor management)
@@ -134,30 +134,30 @@ public static class UserInterface
         // Primary wordmark — cyan
         SetColour(ConsoleColor.Cyan);
         Console.WriteLine();
-        Console.WriteLine(@"   ██████╗██╗   ██╗██████╗ ███████╗██████╗ ███████╗██╗  ██╗██╗███████╗██╗     ██████╗ ");
-        Console.WriteLine(@"  ██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗██╔════╝██║  ██║██║██╔════╝██║     ██╔══██╗");
-        Console.WriteLine(@"  ██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝███████╗███████║██║█████╗  ██║     ██║  ██║");
-        Console.WriteLine(@"  ██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗╚════██║██╔══██║██║██╔══╝  ██║     ██║  ██║");
-        Console.WriteLine(@"  ╚██████╗   ██║   ██████╔╝███████╗██║  ██║███████║██║  ██║██║███████╗███████╗██████╔╝");
-        Console.WriteLine(@"   ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚═════╝ ");
+        Console.WriteLine(@"  ███╗   ███╗ █████╗ ███╗   ██╗██╗  ██╗███████╗██╗   ██╗");
+        Console.WriteLine(@"  ████╗ ████║██╔══██╗████╗  ██║██║ ██╔╝██╔════╝╚██╗ ██╔╝");
+        Console.WriteLine(@"  ██╔████╔██║███████║██╔██╗ ██║█████╔╝ █████╗   ╚████╔╝ ");
+        Console.WriteLine(@"  ██║╚██╔╝██║██╔══██║██║╚██╗██║██╔═██╗ ██╔══╝    ╚██╔╝  ");
+        Console.WriteLine(@"  ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██╗███████╗   ██║   ");
+        Console.WriteLine(@"  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝   ╚═╝   ");
         ResetColour();
 
         // "SA" accent — yellow
         SetColour(ConsoleColor.Yellow);
         Console.WriteLine();
-        Console.WriteLine(@"                          ███████╗ █████╗ ");
-        Console.WriteLine(@"                          ██╔════╝██╔══██╗");
-        Console.WriteLine(@"                          ███████╗███████║");
-        Console.WriteLine(@"                          ╚════██║██╔══██║");
-        Console.WriteLine(@"                          ███████║██║  ██║");
-        Console.WriteLine(@"                          ╚══════╝╚═╝  ╚═╝");
+        Console.WriteLine(@"             ██████╗  ██████╗ ████████╗");
+        Console.WriteLine(@"             ██╔══██╗██╔═══██╗╚══██╔══╝");
+        Console.WriteLine(@"             ██████╔╝██║   ██║   ██║   ");
+        Console.WriteLine(@"             ██╔══██╗██║   ██║   ██║   ");
+        Console.WriteLine(@"             ██████╔╝╚██████╔╝   ██║   ");
+        Console.WriteLine(@"             ╚═════╝  ╚═════╝    ╚═╝   ");
         ResetColour();
 
         Console.WriteLine();
 
         // Shield tagline — dark cyan
         SetColour(ConsoleColor.DarkCyan);
-        Console.WriteLine("          🛡️  Protecting South Africa — One Click at a Time  🛡️");
+        Console.WriteLine("          🛡️  Bananas about Cybersecurity — One Click at a Time  🛡️");
         ResetColour();
 
         DrawBorder(72, '─', ConsoleColor.DarkGray);

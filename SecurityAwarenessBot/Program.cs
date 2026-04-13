@@ -1,5 +1,5 @@
 // ============================================================
-//  CyberShield SA — Cybersecurity Awareness Chatbot
+//  Monkey Bot — Cybersecurity Awareness Chatbot
 //  Program.cs — Application Entry Point
 //  Department of Cybersecurity Public Awareness Campaign
 // ============================================================
@@ -11,7 +11,7 @@ using SecurityAwarenessBot.Utils;
 
 // ── 1. Boot: Display ASCII logo & play welcome audio ────────────────────────
 Console.OutputEncoding = System.Text.Encoding.UTF8;
-Console.Title = "CyberShield SA — Cybersecurity Awareness Chatbot";
+Console.Title = "Monkey Bot — Cybersecurity Awareness Chatbot";
 
 UserInterface.DisplayLogo();
 await AudioPlayer.PlayWelcomeAsync();
@@ -19,7 +19,7 @@ await AudioPlayer.PlayWelcomeAsync();
 await Task.Delay(500);
 
 // ── 2. Session header ────────────────────────────────────────────────────────
-UserInterface.DrawBox("🇿🇦  CyberShield SA — Cybersecurity Awareness Chatbot  🇿🇦");
+UserInterface.DrawBox("🇿🇦  Monkey Bot — Cybersecurity Awareness Chatbot  🇿🇦");
 Console.WriteLine();
 
 await UserInterface.TypeWriteAsync(
@@ -27,7 +27,7 @@ await UserInterface.TypeWriteAsync(
 await Task.Delay(700);
 
 await UserInterface.TypeWriteAsync(
-    "  Hello! I am CyberShield, your personal cybersecurity assistant.",
+    "  Hello! I am Monkey Bot, your personal cybersecurity assistant.",
     ConsoleColor.Cyan, 28);
 await UserInterface.TypeWriteAsync(
     "  My mission is to help South African citizens stay safe online.",
@@ -107,7 +107,7 @@ while (running)
             Console.WriteLine();
             UserInterface.DrawBorder(72, '─', ConsoleColor.DarkCyan);
             await UserInterface.TypeWriteAsync(
-                "  🤖  CyberShield:", ConsoleColor.Cyan, 18);
+                "  🤖  Monkey Bot:", ConsoleColor.Cyan, 18);
             Console.WriteLine();
 
             // Render each line with colour-coded typing effect

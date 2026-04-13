@@ -1,5 +1,5 @@
 // ============================================================
-//  CyberShield SA — Cybersecurity Awareness Chatbot
+//  Monkey Bot — Cybersecurity Awareness Chatbot
 //  Core/ChatEngine.cs
 //  The main conversational engine. Responsibilities:
 //    • Classify sanitised user input into a Topic

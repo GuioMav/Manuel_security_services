@@ -1,5 +1,5 @@
 // ============================================================
-//  CyberShield SA — Cybersecurity Awareness Chatbot
+//  Monkey Bot — Cybersecurity Awareness Chatbot
 //  Core/InputValidator.cs
 //  Validates and sanitises raw user input before it reaches the
 //  ChatEngine, ensuring graceful handling of edge cases:
