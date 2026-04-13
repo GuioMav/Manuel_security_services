@@ -20,4 +20,10 @@
     <PackageReference Include="System.Windows.Extensions" Version="10.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="audio/MSS_audio_intro.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

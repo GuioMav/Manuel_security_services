@@ -8,6 +8,7 @@
 //    so the project compiles and runs on macOS/Linux (CI runs ubuntu).
 //  • If no WAV file exists, one is generated programmatically via a
 //    pure-C# WAV encoder (440 Hz sine wave, 2 s, fade in/out).
+//    This ensures audio logic remains functional even if custom assets are missing.
 //  • Any audio error is caught and logged without crashing the bot.
 // ============================================================
 
@@ -21,12 +22,11 @@ namespace SecurityAwarenessBot.Utils;
 /// </summary>
 public static class AudioPlayer
 {
-    // Resolve the Audio/ subdirectory relative to the executing assembly
     private static readonly string AudioDirectory =
-        Path.Combine(AppContext.BaseDirectory, "Audio");
+        Path.Combine(AppContext.BaseDirectory, "audio");
 
     private static readonly string WavFilePath =
-        Path.Combine(AudioDirectory, "welcome.wav");
+        Path.Combine(AudioDirectory, "MSS_audio_intro.wav");
 
     // ── Public API ────────────────────────────────────────────────────────────
 
