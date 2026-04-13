@@ -1,5 +1,5 @@
 // ============================================================
-//  Monkey Bot — Cybersecurity Awareness Chatbot
+//  Manuel security services MSS — Cybersecurity Awareness Chatbot
 //  Core/ChatEngine.cs
 //  The main conversational engine. Responsibilities:
 //    • Classify sanitised user input into a Topic

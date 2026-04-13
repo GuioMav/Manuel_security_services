@@ -1,5 +1,5 @@
 // ============================================================
-//  Monkey Bot — Cybersecurity Awareness Chatbot
+//  Manuel security services MSS — Cybersecurity Awareness Chatbot
 //  Core/InputValidator.cs
 //  Validates and sanitises raw user input before it reaches the
 //  ChatEngine, ensuring graceful handling of edge cases:

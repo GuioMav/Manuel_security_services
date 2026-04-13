@@ -1,5 +1,5 @@
 // ============================================================
-//  Monkey Bot — Cybersecurity Awareness Chatbot
+//  Manuel security services MSS — Cybersecurity Awareness Chatbot
 //  Utils/AudioPlayer.cs
 //  Wraps System.Media.SoundPlayer for welcome audio playback.
 //

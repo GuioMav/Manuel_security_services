@@ -1,5 +1,5 @@
 // ============================================================
-//  Monkey Bot — Cybersecurity Awareness Chatbot
+//  Manuel security services MSS — Cybersecurity Awareness Chatbot
 //  UI/UserInterface.cs
 //  Centralises all console presentation logic:
 //    • Colour helpers (ForegroundColor management)
@@ -124,40 +124,39 @@ public static class UserInterface
     // ── 5. ASCII art logo ─────────────────────────────────────────────────────
 
     /// <summary>
-    /// Clears the console and renders the CyberShield SA ASCII-art banner.
+    /// Clears the console and renders the Manuel security services MSS banner.
     /// Uses distinct colours to split the wordmark from the tagline.
     /// </summary>
     public static void DisplayLogo()
     {
         Console.Clear();
 
-        // Primary wordmark — cyan
         SetColour(ConsoleColor.Cyan);
         Console.WriteLine();
-        Console.WriteLine(@"  ███╗   ███╗ █████╗ ███╗   ██╗██╗  ██╗███████╗██╗   ██╗");
-        Console.WriteLine(@"  ████╗ ████║██╔══██╗████╗  ██║██║ ██╔╝██╔════╝╚██╗ ██╔╝");
-        Console.WriteLine(@"  ██╔████╔██║███████║██╔██╗ ██║█████╔╝ █████╗   ╚████╔╝ ");
-        Console.WriteLine(@"  ██║╚██╔╝██║██╔══██║██║╚██╗██║██╔═██╗ ██╔══╝    ╚██╔╝  ");
-        Console.WriteLine(@"  ██║ ╚═╝ ██║██║  ██║██║ ╚████║██║  ██╗███████╗   ██║   ");
-        Console.WriteLine(@"  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝   ╚═╝   ");
+        Console.WriteLine(@"  ███╗   ███╗ ███████╗ ███████╗");
+        Console.WriteLine(@"  ████╗ ████║ ██╔════╝ ██╔════╝");
+        Console.WriteLine(@"  ██╔████╔██║ ███████╗ ███████╗");
+        Console.WriteLine(@"  ██║╚██╔╝██║ ╚════██║ ╚════██║");
+        Console.WriteLine(@"  ██║ ╚═╝ ██║ ███████║ ███████║");
+        Console.WriteLine(@"  ╚═╝     ╚═╝ ╚══════╝ ╚══════╝");
         ResetColour();
 
-        // "SA" accent — yellow
+        // Subtitle — yellow
         SetColour(ConsoleColor.Yellow);
         Console.WriteLine();
-        Console.WriteLine(@"             ██████╗  ██████╗ ████████╗");
-        Console.WriteLine(@"             ██╔══██╗██╔═══██╗╚══██╔══╝");
-        Console.WriteLine(@"             ██████╔╝██║   ██║   ██║   ");
-        Console.WriteLine(@"             ██╔══██╗██║   ██║   ██║   ");
-        Console.WriteLine(@"             ██████╔╝╚██████╔╝   ██║   ");
-        Console.WriteLine(@"             ╚═════╝  ╚═════╝    ╚═╝   ");
+        Console.WriteLine(@"       ███╗   ███╗ █████╗ ███╗   ██╗██╗   ██╗███████╗██╗     ");
+        Console.WriteLine(@"       ████╗ ████║██╔══██╗████╗  ██║██║   ██║██╔════╝██║     ");
+        Console.WriteLine(@"       ██╔████╔██║███████║██╔██╗ ██║██║   ██║█████╗  ██║     ");
+        Console.WriteLine(@"       ██║╚██╔╝██║██╔══██║██║╚██╗██║██║   ██║██╔══╝  ██║     ");
+        Console.WriteLine(@"       ██║ ╚═╝ ██║██║  ██║██║ ╚████║╚██████╔╝███████╗███████╗");
+        Console.WriteLine(@"       ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚══════╝");
         ResetColour();
 
         Console.WriteLine();
 
-        // Shield tagline — dark cyan
+        // MSS tagline — dark cyan
         SetColour(ConsoleColor.DarkCyan);
-        Console.WriteLine("          🛡️  Bananas about Cybersecurity — One Click at a Time  🛡️");
+        Console.WriteLine("          🛡️  Professional Security Intelligence — One Click at a Time  🛡️");
         ResetColour();
 
         DrawBorder(72, '─', ConsoleColor.DarkGray);
