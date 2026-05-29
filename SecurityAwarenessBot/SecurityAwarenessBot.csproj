@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -18,7 +18,7 @@
       It is cross-platform at the package level; the AudioPlayer class uses a
       RuntimeInformation.IsOSPlatform(Windows) guard so it is only CALLED on Windows.
     -->
-    <PackageReference Include="System.Windows.Extensions" Version="10.0.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
