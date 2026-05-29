@@ -87,7 +87,7 @@
                     <!-- Header Title -->
                     <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
                         <TextBlock Text="🛡️" FontSize="24" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="MSS SECURITY" FontSize="20" FontWeight="Bold" Foreground="#00D2FF" VerticalAlignment="Center" LetterSpacing="1.5"/>
+                        <TextBlock Text="MSS SECURITY" FontSize="20" FontWeight="Bold" Foreground="#00D2FF" VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <!-- Monospace ASCII Art Logo -->
@@ -105,9 +105,9 @@
 
                     <!-- Session Metadata Card -->
                     <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                        <StackPanel Spacing="15">
+                        <StackPanel>
                             <!-- User Name Card -->
-                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1">
+                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,15">
                                 <StackPanel>
                                     <TextBlock Text="ACTIVE USER" FontSize="10" FontWeight="Bold" Foreground="#888888"/>
                                     <TextBlock x:Name="TxtSidebarUser" Text="Alice" FontSize="16" FontWeight="SemiBold" Foreground="#FFFFFF" Margin="0,4,0,0"/>
@@ -115,7 +115,7 @@
                             </Border>
 
                             <!-- Session ID Card -->
-                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1">
+                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,15">
                                 <StackPanel>
                                     <TextBlock Text="SESSION ID" FontSize="10" FontWeight="Bold" Foreground="#888888"/>
                                     <TextBlock x:Name="TxtSidebarSessionId" Text="ABC123D4" FontSize="16" FontWeight="Bold" Foreground="#FFFF00" Margin="0,4,0,0" FontFamily="Consolas"/>
@@ -123,7 +123,7 @@
                             </Border>
 
                             <!-- Live Duration Card -->
-                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1">
+                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,15">
                                 <StackPanel>
                                     <TextBlock Text="SESSION DURATION" FontSize="10" FontWeight="Bold" Foreground="#888888"/>
                                     <TextBlock x:Name="TxtSidebarDuration" Text="00m 00s" FontSize="16" FontWeight="SemiBold" Foreground="#00D2FF" Margin="0,4,0,0"/>
@@ -131,7 +131,7 @@
                             </Border>
 
                             <!-- Stored Memory Recall Stated Favorite Topic -->
-                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1">
+                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,15">
                                 <StackPanel>
                                     <TextBlock Text="MEMORIZED USER INTEREST" FontSize="10" FontWeight="Bold" Foreground="#888888"/>
                                     <TextBlock x:Name="TxtSidebarFavorite" Text="None Detected Yet" FontSize="14" FontWeight="SemiBold" Foreground="#00E676" Margin="0,4,0,0"/>

@@ -43,6 +43,32 @@ public static class ResponseLibrary
         "  • Use passphrases (e.g., 'Springbok!Mountain$2024') which are long and hard to crack.\n" +
         "  • Use a secure password manager like Bitwarden or 1Password to store credentials safely.";
 
+    public static string GetPasswordResponse(string userName = "Citizen") =>
+        $"Absolutely, {userName}! Weak passwords are the single biggest entry point\n" +
+        "  for cybercriminals worldwide — including here in South Africa.\n" +
+        "\n" +
+        "  ⚠  Passwords you must NEVER use:\n" +
+        "  • Your name, ID number, or date of birth\n" +
+        "  • Simple sequences: '123456', 'abcdef', 'qwerty'\n" +
+        "  • The word 'password' or 'password123'\n" +
+        "  • Your phone number or the name of a family member\n" +
+        "\n" +
+        "  ✔  What makes a strong password:\n" +
+        "  • At least 12 characters long (longer is always better)\n" +
+        "  • A mix of UPPERCASE, lowercase, numbers (0–9), and symbols (!@#$)\n" +
+        "  • A passphrase is even better: 'Springbok!Dance$2024'\n" +
+        "  • Unique password for EVERY account — reusing passwords is dangerous\n" +
+        "\n" +
+        "  ✔  Tools and habits that help:\n" +
+        "  • Use a reputable password manager (Bitwarden, 1Password, KeePass)\n" +
+        "  • Enable two-factor authentication (2FA / MFA) wherever possible\n" +
+        "  • Change passwords immediately if you suspect a breach\n" +
+        "  • Check if your email has been compromised: https://haveibeenpwned.com\n" +
+        "\n" +
+        "  ⚠  Remember: No legitimate South African bank, government department,\n" +
+        "  or reputable company will EVER ask for your password via phone, email,\n" +
+        "  or SMS. If someone asks — it is a scam.\n";
+
     public static string GetScamGuidance(string userName = "Citizen") =>
         $"Scams in South Africa are extremely common, {userName}, posing as Capitec, Capitec Pay, Capitec App alerts, SASSA grants, or DHL/SAPS package issues.\n" +
         "  • Never share your banking OTP with anyone, not even someone claiming to be from your bank.\n" +

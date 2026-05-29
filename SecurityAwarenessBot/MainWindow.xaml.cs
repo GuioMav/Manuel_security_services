@@ -46,7 +46,7 @@ namespace SecurityAwarenessBot
 
         private async void TxtOnboardingName_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == KeyCode.Return || e.Key == Key.Enter)
+            if (e.Key == Key.Return || e.Key == Key.Enter)
             {
                 await TryOnboardUserAsync();
             }
@@ -135,7 +135,7 @@ namespace SecurityAwarenessBot
 
         private async void TxtChatInput_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == KeyCode.Return || e.Key == Key.Enter)
+            if (e.Key == Key.Return || e.Key == Key.Enter)
             {
                 e.Handled = true;
                 await SubmitMessageAsync();

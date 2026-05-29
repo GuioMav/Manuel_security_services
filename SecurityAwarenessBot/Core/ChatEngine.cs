@@ -92,7 +92,7 @@ public class ChatEngine
         // ── 2. Handle Quiz cancel/exit command ───────────────────────────────
         if (_quizState != QuizState.NotStarted && _quizState != QuizState.Complete)
         {
-            if (clean.ContainsAny("cancel", "leave", "quit quiz", "stop", "exit quiz"))
+            if (clean.ContainsAnyKeyword("cancel", "leave", "quit quiz", "stop", "exit quiz"))
             {
                 _quizState = QuizState.NotStarted;
                 await Task.Delay(250);
@@ -103,7 +103,7 @@ public class ChatEngine
         }
 
         // ── 3. Memory Capture: Detect user interests/favorites ────────────────
-        if (clean.ContainsAny("interested in", "my favorite", "i like", "i care about", "i love"))
+        if (clean.ContainsAnyKeyword("interested in", "my favorite", "i like", "i care about", "i love"))
         {
             string? detectedFav = null;
             if (clean.Contains("privacy")) detectedFav = "privacy";
@@ -123,21 +123,21 @@ public class ChatEngine
 
         // ── 4. Sentiment Detection ───────────────────────────────────────────
         string detectedSentiment = string.Empty;
-        if (clean.ContainsAny("worried", "scared", "fear", "afraid", "scam", "paranoid", "nervous", "worry"))
+        if (clean.ContainsAnyKeyword("worried", "scared", "fear", "afraid", "scam", "paranoid", "nervous", "worry"))
         {
             detectedSentiment = "worried";
         }
-        else if (clean.ContainsAny("frustrated", "angry", "annoyed", "irritated", "sick of", "tired of", "hate"))
+        else if (clean.ContainsAnyKeyword("frustrated", "angry", "annoyed", "irritated", "sick of", "tired of", "hate"))
         {
             detectedSentiment = "frustrated";
         }
-        else if (clean.ContainsAny("curious", "wonder", "want to know", "explain", "how do", "why does"))
+        else if (clean.ContainsAnyKeyword("curious", "wonder", "want to know", "explain", "how do", "why does"))
         {
             detectedSentiment = "curious";
         }
 
         // ── 5. Conversation Flow: Context-based Continuation Routing ────────
-        bool isContinuation = clean.ContainsAny("another", "more", "explain", "continue", "detail", "next");
+        bool isContinuation = clean.ContainsAnyKeyword("another", "more", "explain", "continue", "detail", "next");
         Topic currentTopic;
 
         if (isContinuation && _lastTopic != Topic.Unknown && _lastTopic != Topic.Quiz)
@@ -160,7 +160,7 @@ public class ChatEngine
             case Topic.Phishing:
                 _lastTopic = Topic.Phishing;
                 // If they ask for "tips" or "another tip", give randomized single tips
-                if (clean.ContainsAny("tip", "another", "more"))
+                if (clean.ContainsAnyKeyword("tip", "another", "more"))
                     baseResponse = ResponseLibrary.GetRandomPhishingTip(_user.Name);
                 else
                     baseResponse = ResponseLibrary.GetPhishingResponse(_user.Name);
@@ -168,7 +168,7 @@ public class ChatEngine
 
             case Topic.Password:
                 _lastTopic = Topic.Password;
-                if (clean.ContainsAny("strong", "make", "create") || isContinuation)
+                if (clean.ContainsAnyKeyword("strong", "make", "create") || isContinuation)
                     baseResponse = ResponseLibrary.GetPasswordGuidance(_user.Name);
                 else
                     baseResponse = ResponseLibrary.GetPasswordResponse(_user.Name);
@@ -250,31 +250,31 @@ public class ChatEngine
     /// </summary>
     public Topic ClassifyInput(string sanitisedInput)
     {
-        if (sanitisedInput.ContainsAny("phishing", "phish", "fake email", "spoofing", "smishing", "vishing"))
+        if (sanitisedInput.ContainsAnyKeyword("phishing", "phish", "fake email", "spoofing", "smishing", "vishing"))
             return Topic.Phishing;
 
-        if (sanitisedInput.ContainsAny("password", "passcode", "pin", "passphrase", "credential", "login"))
+        if (sanitisedInput.ContainsAnyKeyword("password", "passcode", "pin", "passphrase", "credential", "login"))
             return Topic.Password;
 
-        if (sanitisedInput.ContainsAny("link", "url", "click", "suspicious", "website", "site", "http", "https"))
+        if (sanitisedInput.ContainsAnyKeyword("link", "url", "click", "suspicious", "website", "site", "http", "https"))
             return Topic.SuspiciousLinks;
 
-        if (sanitisedInput.ContainsAny("scam", "fraud", "sassa", "prize", "won", "voucher"))
+        if (sanitisedInput.ContainsAnyKeyword("scam", "fraud", "sassa", "prize", "won", "voucher"))
             return Topic.Scam;
 
-        if (sanitisedInput.ContainsAny("privacy", "private", "personal data", "shred", "app permissions"))
+        if (sanitisedInput.ContainsAnyKeyword("privacy", "private", "personal data", "shred", "app permissions"))
             return Topic.Privacy;
 
-        if (sanitisedInput.ContainsAny("purpose", "what are you", "who are you", "what do you do", "introduce", "about"))
+        if (sanitisedInput.ContainsAnyKeyword("purpose", "what are you", "who are you", "what do you do", "introduce", "about"))
             return Topic.Purpose;
 
-        if (sanitisedInput.ContainsAny("tip", "advice", "protect", "safe", "security", "cyber", "secure"))
+        if (sanitisedInput.ContainsAnyKeyword("tip", "advice", "protect", "safe", "security", "cyber", "secure"))
             return Topic.Tips;
 
-        if (sanitisedInput.ContainsAny("quiz", "test", "challenge", "trivia"))
+        if (sanitisedInput.ContainsAnyKeyword("quiz", "test", "challenge", "trivia"))
             return Topic.Quiz;
 
-        if (sanitisedInput.ContainsAny("how are you", "how's it going", "hello", "hi", "hey", "greetings"))
+        if (sanitisedInput.ContainsAnyKeyword("how are you", "how's it going", "hello", "hi", "hey", "greetings"))
             return Topic.SmallTalk;
 
         return Topic.Unknown;
@@ -405,4 +405,20 @@ public class ChatEngine
 
         return string.Empty;
     }
+}
+
+// ── String extension ──────────────────────────────────────────────────────────
+
+/// <summary>
+/// Extension methods for <see cref="string"/> to support cleaner multi-keyword
+/// matching in the ChatEngine classification logic.
+/// </summary>
+public static class StringExtensions
+{
+    /// <summary>
+    /// Returns <see langword="true"/> if <paramref name="source"/> contains any of the
+    /// specified <paramref name="keywords"/> (case-insensitive, ordinal comparison).
+    /// </summary>
+    public static bool ContainsAnyKeyword(this string source, params string[] keywords) =>
+        keywords.Any(k => source.Contains(k, StringComparison.OrdinalIgnoreCase));
 }
