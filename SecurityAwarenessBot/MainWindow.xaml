@@ -74,8 +74,8 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- SUB-HEADER PANEL (NO SIDEBAR, FULL WIDTH HEADER) -->
-            <Border Grid.Row="0" Background="#1E1E1E" Padding="20,12" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1">
+            <!-- SUB-HEADER PANEL (MINI ASCII LOGO ON TOP LEFT) -->
+            <Border Grid.Row="0" Background="#1E1E1E" Padding="20,8" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -83,10 +83,19 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Top Left: App Title -->
+                    <!-- Top Left: Mini ASCII Art Logo -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="🛡️" FontSize="20" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="MSS SECURITY" FontSize="16" FontWeight="Bold" Foreground="#00D2FF" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                        <Border Background="#121212" CornerRadius="4" Padding="8,4" BorderBrush="#2D2D2D" BorderThickness="1" VerticalAlignment="Center">
+                            <TextBlock FontFamily="Consolas, Monospace" FontSize="7.5" FontWeight="Bold" Foreground="#00D2FF" LineHeight="8" LineStackingStrategy="BlockLineHeight" VerticalAlignment="Center">
+                                ███╗   ███╗ ███████╗ ███████╗<LineBreak/>
+                                ████╗ ████║ ██╔════╝ ██╔════╝<LineBreak/>
+                                ██╔████╔██║ ███████╗ ███████╗<LineBreak/>
+                                ██║╚██╔╝██║ ╚════██║ ╚════██║<LineBreak/>
+                                ██║ ╚═╝ ██║ ███████║ ███████║<LineBreak/>
+                                ╚═╝     ╚═╝ ╚══════╝ ╚══════╝
+                            </TextBlock>
+                        </Border>
                     </StackPanel>
 
                     <!-- Top Right: User Profile and controls -->
@@ -142,20 +151,30 @@
 
         <!-- OVERLAY: USER ONBOARDING POPUP -->
         <Grid x:Name="OnboardingGrid" Background="#D8000000" Visibility="Visible">
-            <Border Background="#1E1E1E" Width="400" Height="280" CornerRadius="12" BorderBrush="#2D2D2D" BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border Background="#1E1E1E" Width="440" Height="340" CornerRadius="12" BorderBrush="#2D2D2D" BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid Margin="25">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="🛡️" FontSize="36" HorizontalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Text="MSS Cybersecurity Bot" FontSize="20" FontWeight="Bold" Foreground="#00D2FF" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    <!-- Full-Size Center ASCII Art Logo -->
+                    <Border Grid.Row="0" Background="#121212" CornerRadius="8" Padding="15,10" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,10" HorizontalAlignment="Center">
+                        <TextBlock FontFamily="Consolas, Monospace" FontSize="11" Foreground="#00D2FF" TextAlignment="Center" LineHeight="12">
+                            ███╗   ███╗ ███████╗ ███████╗<LineBreak/>
+                            ████╗ ████║ ██╔════╝ ██╔════╝<LineBreak/>
+                            ██╔████╔██║ ███████╗ ███████╗<LineBreak/>
+                            ██║╚██╔╝██║ ╚════██║ ╚════██║<LineBreak/>
+                            ██║ ╚═╝ ██║ ███████║ ███████║<LineBreak/>
+                            ╚═╝     ╚═╝ ╚══════╝ ╚══════╝<LineBreak/>
+                            <Span Foreground="Yellow" FontSize="8">PROFESSIONAL SECURITY INTELLIGENCE</Span>
+                        </TextBlock>
+                    </Border>
 
-                    <StackPanel Grid.Row="2" Margin="0,15,0,0">
-                        <TextBlock Text="Welcome! Please enter your name to initialize a personalized secure session:" FontSize="13" TextWrapping="Wrap" Foreground="#A0A0A0" TextAlignment="Center" Margin="0,0,0,12"/>
+                    <!-- Prompt and Inputs -->
+                    <StackPanel Grid.Row="1" Margin="0,5,0,0">
+                        <TextBlock Text="Welcome! Please enter your name to initialize a personalized secure session:" FontSize="12.5" TextWrapping="Wrap" Foreground="#A0A0A0" TextAlignment="Center" Margin="0,0,0,12"/>
                         <Border Background="#121212" BorderBrush="#2D2D2D" BorderThickness="1" CornerRadius="6" Padding="10,6">
                             <TextBox x:Name="TxtOnboardingName"
                                      Background="Transparent"
@@ -168,7 +187,8 @@
                         </Border>
                     </StackPanel>
 
-                    <Button Grid.Row="3"
+                    <!-- Action Button -->
+                    <Button Grid.Row="2"
                             x:Name="BtnStartSession"
                             Content="START SECURE SESSION"
                             Style="{StaticResource PrimaryButton}"
