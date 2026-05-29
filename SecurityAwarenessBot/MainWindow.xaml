@@ -99,7 +99,7 @@
                             ██║╚██╔╝██║ ╚════██║ ╚════██║<LineBreak/>
                             ██║ ╚═╝ ██║ ███████║ ███████║<LineBreak/>
                             ╚═╝     ╚═╝ ╚══════╝ ╚══════╝<LineBreak/>
-                            <Span Foreground="#Yellow" FontSize="8">PROFESSIONAL SECURITY INTELLIGENCE</Span>
+                            <Span Foreground="Yellow" FontSize="8">PROFESSIONAL SECURITY INTELLIGENCE</Span>
                         </TextBlock>
                     </Border>
 
