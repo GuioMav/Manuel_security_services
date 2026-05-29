@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Manuel Security Services MSS — Cybersecurity Awareness Bot"
-        Height="700" Width="900"
+        Height="780" Width="950"
         WindowStartupLocation="CenterScreen"
         Background="#121212"
         Foreground="#E0E0E0"
@@ -74,8 +74,8 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- SUB-HEADER PANEL (MINI ASCII LOGO ON TOP LEFT) -->
-            <Border Grid.Row="0" Background="#1E1E1E" Padding="20,8" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1">
+            <!-- SUB-HEADER PANEL (FULL-SIZE ASCII LOGO WITH SUBTITLE & TAGLINE IN HEADER) -->
+            <Border Grid.Row="0" Background="#1E1E1E" Padding="20,10" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -83,18 +83,29 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Top Left: Mini ASCII Art Logo -->
+                    <!-- Top Left: Full-Size ASCII Art Logo with Subtitle and Tagline -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="🛡️" FontSize="20" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                        <Border Background="#121212" CornerRadius="4" Padding="8,4" BorderBrush="#2D2D2D" BorderThickness="1" VerticalAlignment="Center">
-                            <TextBlock FontFamily="Consolas, Monospace" FontSize="7.5" FontWeight="Bold" Foreground="#00D2FF" LineHeight="8" LineStackingStrategy="BlockLineHeight" VerticalAlignment="Center">
-                                ███╗   ███╗ ███████╗ ███████╗<LineBreak/>
-                                ████╗ ████║ ██╔════╝ ██╔════╝<LineBreak/>
-                                ██╔████╔██║ ███████╗ ███████╗<LineBreak/>
-                                ██║╚██╔╝██║ ╚════██║ ╚════██║<LineBreak/>
-                                ██║ ╚═╝ ██║ ███████║ ███████║<LineBreak/>
-                                ╚═╝     ╚═╝ ╚══════╝ ╚══════╝
-                            </TextBlock>
+                        <TextBlock Text="🛡️" FontSize="26" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                        <Border Background="#121212" CornerRadius="8" Padding="15,10" BorderBrush="#2D2D2D" BorderThickness="1" VerticalAlignment="Center">
+                            <StackPanel>
+                                <TextBlock FontFamily="Consolas, Monospace" FontSize="7.5" FontWeight="Bold" Foreground="#00D2FF" LineHeight="8.5" LineStackingStrategy="BlockLineHeight" HorizontalAlignment="Center">
+                                    ███╗   ███╗ ███████╗ ███████╗<LineBreak/>
+                                    ████╗ ████║ ██╔════╝ ██╔════╝<LineBreak/>
+                                    ██╔████╔██║ ███████╗ ███████╗<LineBreak/>
+                                    ██║╚██╔╝██║ ╚════██║ ╚════██║<LineBreak/>
+                                    ██║ ╚═╝ ██║ ███████║ ███████║<LineBreak/>
+                                    ╚═╝     ╚═╝ ╚══════╝ ╚══════╝
+                                </TextBlock>
+                                <TextBlock FontFamily="Consolas, Monospace" FontSize="5.5" FontWeight="Bold" Foreground="Yellow" LineHeight="6" LineStackingStrategy="BlockLineHeight" HorizontalAlignment="Center" Margin="0,4,0,4">
+                                           ███╗   ███╗ █████╗ ███╗   ██╗██╗   ██╗███████╗██╗     <LineBreak/>
+                                           ████╗ ████║██╔══██╗████╗  ██║██║   ██║██╔════╝██║     <LineBreak/>
+                                           ██╔████╔██║███████║██╔██╗ ██║██║   ██║█████╗  ██║     <LineBreak/>
+                                           ██║╚██╔╝██║██╔══██║██║╚██╗██║██║   ██║██╔══╝  ██║     <LineBreak/>
+                                           ██║ ╚═╝ ██║██║  ██║██║ ╚████║╚██████╔╝███████╗███████╗<LineBreak/>
+                                           ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚══════╝
+                                </TextBlock>
+                                <TextBlock Text="🛡️  Professional Security Intelligence — One Click at a Time  🛡️" FontSize="8.5" FontWeight="SemiBold" Foreground="#00E676" HorizontalAlignment="Center"/>
+                            </StackPanel>
                         </Border>
                     </StackPanel>
 
