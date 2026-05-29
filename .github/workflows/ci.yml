@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Restore, Build & Smoke Test
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       # Step 1 — Check out the repository code
@@ -29,15 +29,8 @@ jobs:
 
       # Step 4 — Build in Release mode, fail fast on warnings-as-errors
       - name: Build (Release)
-        run: |
-          dotnet build SecurityAwarenessBot/SecurityAwarenessBot.csproj \
-            --configuration Release \
-            --no-restore
+        run: dotnet build SecurityAwarenessBot/SecurityAwarenessBot.csproj --configuration Release --no-restore
 
       # Step 5 — Publish a self-contained artefact to confirm no missing assets
       - name: Publish
-        run: |
-          dotnet publish SecurityAwarenessBot/SecurityAwarenessBot.csproj \
-            --configuration Release \
-            --no-build \
-            --output ./publish
+        run: dotnet publish SecurityAwarenessBot/SecurityAwarenessBot.csproj --configuration Release --no-build --output ./publish
