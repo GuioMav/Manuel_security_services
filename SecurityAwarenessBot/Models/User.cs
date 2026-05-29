@@ -27,6 +27,15 @@ public class User
     /// <summary>Timestamp captured when the User object is instantiated.</summary>
     public DateTime SessionStart { get; set; } = DateTime.Now;
 
+    /// <summary>Tracks the user's stated favorite cybersecurity topic for memory and recall.</summary>
+    public string? FavoriteTopic { get; set; } = null;
+
+    /// <summary>Flag to track if we've already recalled their interest to prevent repetition.</summary>
+    public bool HasRecalledFavorite { get; set; } = false;
+
+    /// <summary>Tracks the user's current score in the cybersecurity quiz.</summary>
+    public int QuizScore { get; set; } = 0;
+
     // ── Derived / helper members ─────────────────────────────────────────────
 
     /// <summary>
