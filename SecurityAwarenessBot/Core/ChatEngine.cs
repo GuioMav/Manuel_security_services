@@ -1,12 +1,9 @@
 // ============================================================
 //  Manuel security services MSS — Cybersecurity Awareness Chatbot
 //  Core/ChatEngine.cs
-//  The main conversational engine. Responsibilities:
-//    • Classify sanitised user input into a Topic
-//    • Manage quiz state (5 sequential questions with answer routing)
-//    • Return appropriate responses from ResponseLibrary
-//    • Personalise all output via the injected User object
-//    • Signal control codes (__EXIT__, __HELP__) to Program.cs
+//  The logical core. Responsible for classifying inputs, tracking
+//  multiturn quiz state (with scoring), maintaining conversational memory
+//  (topics and sentiments), and constructing personalized, dynamic replies.
 // ============================================================
 
 using SecurityAwarenessBot.Models;
@@ -26,10 +23,11 @@ public enum Topic
     Purpose,
     Tips,
     Quiz,
-    QuizAnswer,
     Help,
     Exit,
     SmallTalk,
+    Scam,
+    Privacy,
     Unknown
 }
 
@@ -53,7 +51,7 @@ public enum QuizState
 
 /// <summary>
 /// Core message-processing engine. Maps user input to educational responses
-/// and manages multi-turn quiz state.
+/// and manages multi-turn quiz state, user preferences, and emotional status.
 /// </summary>
 public class ChatEngine
 {
@@ -63,14 +61,11 @@ public class ChatEngine
 
     // ── State ─────────────────────────────────────────────────────────────────
 
-    /// <summary>Current position in the quiz sequence.</summary>
     private QuizState _quizState = QuizState.NotStarted;
+    private Topic _lastTopic = Topic.Unknown;
 
     // ── Constructor ───────────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Creates a new ChatEngine bound to the given <paramref name="user"/> session.
-    /// </summary>
     public ChatEngine(User user)
     {
         _user = user;
@@ -80,85 +75,206 @@ public class ChatEngine
 
     /// <summary>
     /// Processes raw user input and returns the appropriate response string.
-    /// Returns "__EXIT__" to signal a graceful shutdown, "__HELP__" to show the
-    /// help menu. All other returns are displayable response text.
+    /// Supports keyword matches, sentiment pre-processing, memory store/recall,
+    /// and topic-continuation flows.
     /// </summary>
-    /// <param name="rawInput">The unmodified string read from the console.</param>
     public async Task<string> GetResponseAsync(string rawInput)
     {
-        // Empty input is handled by Program.cs before reaching here, but guard anyway
         if (InputValidator.IsEmpty(rawInput))
             return InputValidator.GetFallbackMessage(_user.Name);
 
         string clean = InputValidator.Sanitise(rawInput);
 
-        // ── Check control commands first ─────────────────────────────────────
+        // ── 1. Check control commands first ───────────────────────────────────
         if (InputValidator.IsExitCommand(clean)) return "__EXIT__";
         if (InputValidator.IsHelpCommand(clean)) return "__HELP__";
 
-        // ── If a quiz is in progress, route to quiz answer handler ─────────
+        // ── 2. Handle Quiz cancel/exit command ───────────────────────────────
         if (_quizState != QuizState.NotStarted && _quizState != QuizState.Complete)
+        {
+            if (clean.ContainsAny("cancel", "leave", "quit quiz", "stop", "exit quiz"))
+            {
+                _quizState = QuizState.NotStarted;
+                await Task.Delay(250);
+                return "  ✔  You have successfully left the quiz and returned to the main menu. " +
+                       "What cybersecurity topic would you like to explore next?";
+            }
             return await HandleQuizAnswerAsync(clean);
+        }
 
-        // ── Classify the input and respond ────────────────────────────────────
-        Topic topic = ClassifyInput(clean);
+        // ── 3. Memory Capture: Detect user interests/favorites ────────────────
+        if (clean.ContainsAny("interested in", "my favorite", "i like", "i care about", "i love"))
+        {
+            string? detectedFav = null;
+            if (clean.Contains("privacy")) detectedFav = "privacy";
+            else if (clean.Contains("password")) detectedFav = "passwords";
+            else if (clean.Contains("scam") || clean.Contains("phishing")) detectedFav = "phishing scams";
+            else if (clean.Contains("link")) detectedFav = "suspicious links";
 
-        // Introduce a brief async pause to simulate "thinking"
+            if (detectedFav != null)
+            {
+                _user.FavoriteTopic = detectedFav;
+                _user.HasRecalledFavorite = false; // Reset to allow fresh recall trigger
+                await Task.Delay(300);
+                return $"Great! I'll remember that you're interested in {detectedFav}. " +
+                       "It's a crucial part of staying safe online.";
+            }
+        }
+
+        // ── 4. Sentiment Detection ───────────────────────────────────────────
+        string detectedSentiment = string.Empty;
+        if (clean.ContainsAny("worried", "scared", "fear", "afraid", "scam", "paranoid", "nervous", "worry"))
+        {
+            detectedSentiment = "worried";
+        }
+        else if (clean.ContainsAny("frustrated", "angry", "annoyed", "irritated", "sick of", "tired of", "hate"))
+        {
+            detectedSentiment = "frustrated";
+        }
+        else if (clean.ContainsAny("curious", "wonder", "want to know", "explain", "how do", "why does"))
+        {
+            detectedSentiment = "curious";
+        }
+
+        // ── 5. Conversation Flow: Context-based Continuation Routing ────────
+        bool isContinuation = clean.ContainsAny("another", "more", "explain", "continue", "detail", "next");
+        Topic currentTopic;
+
+        if (isContinuation && _lastTopic != Topic.Unknown && _lastTopic != Topic.Quiz)
+        {
+            currentTopic = _lastTopic;
+        }
+        else
+        {
+            currentTopic = ClassifyInput(clean);
+        }
+
+        // Introduce a brief async pause to simulate artificial "thinking"
         await Task.Delay(350);
 
-        return topic switch
+        // ── 6. Select base educational response ──────────────────────────────
+        string baseResponse = string.Empty;
+
+        switch (currentTopic)
         {
-            Topic.Phishing        => ResponseLibrary.GetPhishingResponse(_user.Name),
-            Topic.Password        => ResponseLibrary.GetPasswordResponse(_user.Name),
-            Topic.SuspiciousLinks => ResponseLibrary.GetSuspiciousLinksResponse(_user.Name),
-            Topic.Purpose         => ResponseLibrary.GetPurposeResponse(_user.Name),
-            Topic.Tips            => ResponseLibrary.GetGeneralTipsResponse(_user.Name),
-            Topic.Quiz            => StartOrAdvanceQuiz(),
-            Topic.SmallTalk       => ResponseLibrary.GetSmallTalkResponse(_user.Name),
-            _                     => InputValidator.GetFallbackMessage(_user.Name)
-        };
+            case Topic.Phishing:
+                _lastTopic = Topic.Phishing;
+                // If they ask for "tips" or "another tip", give randomized single tips
+                if (clean.ContainsAny("tip", "another", "more"))
+                    baseResponse = ResponseLibrary.GetRandomPhishingTip(_user.Name);
+                else
+                    baseResponse = ResponseLibrary.GetPhishingResponse(_user.Name);
+                break;
+
+            case Topic.Password:
+                _lastTopic = Topic.Password;
+                if (clean.ContainsAny("strong", "make", "create") || isContinuation)
+                    baseResponse = ResponseLibrary.GetPasswordGuidance(_user.Name);
+                else
+                    baseResponse = ResponseLibrary.GetPasswordResponse(_user.Name);
+                break;
+
+            case Topic.SuspiciousLinks:
+                _lastTopic = Topic.SuspiciousLinks;
+                baseResponse = ResponseLibrary.GetSuspiciousLinksResponse(_user.Name);
+                break;
+
+            case Topic.Scam:
+                _lastTopic = Topic.Scam;
+                baseResponse = ResponseLibrary.GetScamGuidance(_user.Name);
+                break;
+
+            case Topic.Privacy:
+                _lastTopic = Topic.Privacy;
+                baseResponse = ResponseLibrary.GetPrivacyGuidance(_user.Name);
+                break;
+
+            case Topic.Purpose:
+                _lastTopic = Topic.Purpose;
+                baseResponse = ResponseLibrary.GetPurposeResponse(_user.Name);
+                break;
+
+            case Topic.Tips:
+                _lastTopic = Topic.Tips;
+                baseResponse = ResponseLibrary.GetGeneralTipsResponse(_user.Name);
+                break;
+
+            case Topic.Quiz:
+                _lastTopic = Topic.Quiz;
+                baseResponse = StartOrAdvanceQuiz();
+                break;
+
+            case Topic.SmallTalk:
+                baseResponse = ResponseLibrary.GetSmallTalkResponse(_user.Name);
+                break;
+
+            case Topic.Unknown:
+            default:
+                baseResponse = InputValidator.GetFallbackMessage(_user.Name);
+                break;
+        }
+
+        // ── 7. Build prepends (Sentiment + Memory recall) ────────────────────
+        string finalPrepend = string.Empty;
+
+        // Apply sentiment prepends for emotional empathy
+        if (!string.IsNullOrEmpty(detectedSentiment))
+        {
+            finalPrepend += ResponseLibrary.GetSentimentPrepend(detectedSentiment, _user.Name);
+        }
+
+        // Apply memory recall if discussing their favorited category
+        if (_user.FavoriteTopic != null && !_user.HasRecalledFavorite && currentTopic != Topic.Unknown && currentTopic != Topic.Quiz)
+        {
+            bool matchesFavorite = false;
+            if (_user.FavoriteTopic == "privacy" && currentTopic == Topic.Privacy) matchesFavorite = true;
+            else if (_user.FavoriteTopic == "passwords" && currentTopic == Topic.Password) matchesFavorite = true;
+            else if (_user.FavoriteTopic == "phishing scams" && (currentTopic == Topic.Phishing || currentTopic == Topic.Scam)) matchesFavorite = true;
+            else if (_user.FavoriteTopic == "suspicious links" && currentTopic == Topic.SuspiciousLinks) matchesFavorite = true;
+
+            if (matchesFavorite)
+            {
+                finalPrepend += ResponseLibrary.GetMemoryRecallPrepend(_user.FavoriteTopic, _user.Name);
+                _user.HasRecalledFavorite = true; // Prevent spamming recall
+            }
+        }
+
+        return finalPrepend + baseResponse;
     }
 
     // ── Input classification ──────────────────────────────────────────────────
 
     /// <summary>
     /// Maps a sanitised input string to the most appropriate <see cref="Topic"/>
-    /// using keyword matching via the <see cref="StringExtensions.ContainsAny"/> helper.
+    /// using robust keyword checking.
     /// </summary>
     public Topic ClassifyInput(string sanitisedInput)
     {
-        if (sanitisedInput.ContainsAny(
-                "phishing", "phish", "scam", "fraud",
-                "fake email", "spoofing", "smishing", "vishing"))
+        if (sanitisedInput.ContainsAny("phishing", "phish", "fake email", "spoofing", "smishing", "vishing"))
             return Topic.Phishing;
 
-        if (sanitisedInput.ContainsAny(
-                "password", "passcode", "pin", "passphrase",
-                "credential", "login", "log in", "log-in"))
+        if (sanitisedInput.ContainsAny("password", "passcode", "pin", "passphrase", "credential", "login"))
             return Topic.Password;
 
-        if (sanitisedInput.ContainsAny(
-                "link", "url", "click", "suspicious",
-                "website", "site", "http", "https", "web address"))
+        if (sanitisedInput.ContainsAny("link", "url", "click", "suspicious", "website", "site", "http", "https"))
             return Topic.SuspiciousLinks;
 
-        if (sanitisedInput.ContainsAny(
-                "purpose", "what are you", "who are you",
-                "what do you do", "about", "introduce", "yourself"))
+        if (sanitisedInput.ContainsAny("scam", "fraud", "sassa", "prize", "won", "voucher"))
+            return Topic.Scam;
+
+        if (sanitisedInput.ContainsAny("privacy", "private", "personal data", "shred", "app permissions"))
+            return Topic.Privacy;
+
+        if (sanitisedInput.ContainsAny("purpose", "what are you", "who are you", "what do you do", "introduce", "about"))
             return Topic.Purpose;
 
-        if (sanitisedInput.ContainsAny(
-                "tip", "advice", "protect", "safe",
-                "security", "cyber", "secure", "best practice"))
+        if (sanitisedInput.ContainsAny("tip", "advice", "protect", "safe", "security", "cyber", "secure"))
             return Topic.Tips;
 
-        if (sanitisedInput.ContainsAny(
-                "quiz", "test", "challenge", "trivia"))
+        if (sanitisedInput.ContainsAny("quiz", "test", "challenge", "trivia"))
             return Topic.Quiz;
 
-        if (sanitisedInput.ContainsAny(
-                "how are you", "how's it going", "how are things",
-                "hello", "hi", "hey", "greetings", "good morning", "good day"))
+        if (sanitisedInput.ContainsAny("how are you", "how's it going", "hello", "hi", "hey", "greetings"))
             return Topic.SmallTalk;
 
         return Topic.Unknown;
@@ -166,15 +282,13 @@ public class ChatEngine
 
     // ── Quiz state machine ────────────────────────────────────────────────────
 
-    /// <summary>
-    /// Advances the quiz to the next question when the user types 'quiz',
-    /// or returns the intro if the quiz has not started.
-    /// </summary>
     private string StartOrAdvanceQuiz()
     {
-        // If quiz is complete, restart from the beginning
         if (_quizState == QuizState.Complete)
+        {
             _quizState = QuizState.NotStarted;
+            _user.QuizScore = 0;
+        }
 
         return _quizState switch
         {
@@ -182,7 +296,6 @@ public class ChatEngine
                 AdvanceTo(QuizState.Question1, ResponseLibrary.GetQuizIntroResponse(_user.Name)),
 
             QuizState.Question1 =>
-                // User typed 'quiz' again — they missed the instruction; re-show Q1
                 ResponseLibrary.GetQuizIntroResponse(_user.Name),
 
             QuizState.Question2 =>
@@ -201,23 +314,17 @@ public class ChatEngine
         };
     }
 
-    /// <summary>
-    /// Routes the user's single-letter answer (A–D) to the correct question's
-    /// answer handler and advances the quiz state on a valid answer.
-    /// </summary>
     private async Task<string> HandleQuizAnswerAsync(string clean)
     {
-        await Task.Delay(250);   // Simulate marking delay
+        await Task.Delay(250);
 
-        // Extract a single character answer — accept with or without surrounding text
         string answer = ExtractMultipleChoiceAnswer(clean);
 
         if (string.IsNullOrEmpty(answer))
         {
-            // Non-answer input while quiz is active
             return $"  ❓  You're currently in the quiz, {_user.Name}.\n" +
                    "  Please type A, B, C, or D to answer the current question,\n" +
-                   "  or type 'exit' to leave the quiz and return to the main menu.\n";
+                   "  or type 'cancel' to leave the quiz and return to the main menu.\n";
         }
 
         return _quizState switch
@@ -233,61 +340,62 @@ public class ChatEngine
 
     private string AnswerQ1(string answer)
     {
+        if (answer.ToUpper() == "B") _user.QuizScore++;
         string fb = ResponseLibrary.GetQuizAnswerResponse(answer, _user.Name);
         _quizState = QuizState.Question2;
-        return fb + "\n" + ResponseLibrary.GetQuizQuestion2(_user.Name);
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion2(_user.Name);
     }
 
     private string AnswerQ2(string answer)
     {
+        if (answer.ToUpper() == "C") _user.QuizScore++;
         string fb = ResponseLibrary.GetQuizQuestion2Answer(answer, _user.Name);
         _quizState = QuizState.Question3;
-        return fb + "\n" + ResponseLibrary.GetQuizQuestion3(_user.Name);
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion3(_user.Name);
     }
 
     private string AnswerQ3(string answer)
     {
+        if (answer.ToUpper() == "B") _user.QuizScore++;
         string fb = ResponseLibrary.GetQuizQuestion3Answer(answer, _user.Name);
         _quizState = QuizState.Question4;
-        return fb + "\n" + ResponseLibrary.GetQuizQuestion4(_user.Name);
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion4(_user.Name);
     }
 
     private string AnswerQ4(string answer)
     {
+        if (answer.ToUpper() == "B") _user.QuizScore++;
         string fb = ResponseLibrary.GetQuizQuestion4Answer(answer, _user.Name);
         _quizState = QuizState.Question5;
-        return fb + "\n" + ResponseLibrary.GetQuizQuestion5(_user.Name);
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion5(_user.Name);
     }
 
     private string AnswerQ5(string answer)
     {
+        if (answer.ToUpper() == "D") _user.QuizScore++;
         string fb = ResponseLibrary.GetQuizQuestion5Answer(answer, _user.Name);
         _quizState = QuizState.Complete;
-        return fb;
+        
+        string completionSummary = 
+            $"\n\n  🎉  Quiz complete, {_user.Name}! Well done for completing the challenge.\n" +
+            $"      Your final score is: {_user.QuizScore} / 5\n\n" +
+            "  Remember: knowledge is your best defence against cybercrime.\n" +
+            "  Type 'tips', 'password', or 'links' to learn more, or 'exit' to end your session.";
+
+        return fb + completionSummary;
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-
-    /// <summary>
-    /// Advances the quiz state and returns the provided response text.
-    /// </summary>
     private string AdvanceTo(QuizState nextState, string response)
     {
         _quizState = nextState;
         return response;
     }
 
-    /// <summary>
-    /// Extracts a single multiple-choice letter (A, B, C, or D) from the input.
-    /// Handles inputs like "b", "B", "option b", "I think c", etc.
-    /// </summary>
     private static string ExtractMultipleChoiceAnswer(string clean)
     {
-        // Single character input
         if (clean.Length == 1 && "abcd".Contains(clean))
             return clean.ToUpper();
 
-        // Scan for isolated a/b/c/d word token
         foreach (string word in clean.Split(' '))
         {
             string w = word.Trim().ToUpper();
@@ -297,20 +405,4 @@ public class ChatEngine
 
         return string.Empty;
     }
-}
-
-// ── String extension ──────────────────────────────────────────────────────────
-
-/// <summary>
-/// Extension methods for <see cref="string"/> to support cleaner multi-keyword
-/// matching in the ChatEngine classification logic.
-/// </summary>
-public static class StringExtensions
-{
-    /// <summary>
-    /// Returns <see langword="true"/> if <paramref name="source"/> contains any of the
-    /// specified <paramref name="keywords"/> (case-insensitive, ordinal comparison).
-    /// </summary>
-    public static bool ContainsAny(this string source, params string[] keywords) =>
-        keywords.Any(k => source.Contains(k, StringComparison.OrdinalIgnoreCase));
 }
