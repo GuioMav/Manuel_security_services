@@ -11,7 +11,14 @@ using SecurityAwarenessBot.Utils;
 
 // ── 1. Boot: Display ASCII logo & play welcome audio ────────────────────────
 Console.OutputEncoding = System.Text.Encoding.UTF8;
-Console.Title = "Manuel security services MSS";
+try
+{
+    Console.Title = "Manuel security services MSS";
+}
+catch (Exception)
+{
+    // Ignore if not supported in this environment
+}
 
 UserInterface.DisplayLogo();
 await AudioPlayer.PlayWelcomeAsync();

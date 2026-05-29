@@ -129,7 +129,14 @@ public static class UserInterface
     /// </summary>
     public static void DisplayLogo()
     {
-        Console.Clear();
+        try
+        {
+            Console.Clear();
+        }
+        catch (System.IO.IOException)
+        {
+            // Gracefully ignore if console handle is invalid
+        }
 
         SetColour(ConsoleColor.Cyan);
         Console.WriteLine();
