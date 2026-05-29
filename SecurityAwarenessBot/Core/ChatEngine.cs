@@ -123,7 +123,7 @@ public class ChatEngine
 
         // ── 4. Sentiment Detection ───────────────────────────────────────────
         string detectedSentiment = string.Empty;
-        if (clean.ContainsAnyKeyword("worried", "scared", "fear", "afraid", "scam", "paranoid", "nervous", "worry"))
+        if (clean.ContainsAnyKeyword("worried", "scared", "fear", "afraid", "paranoid", "nervous", "worry"))
         {
             detectedSentiment = "worried";
         }
@@ -210,15 +210,23 @@ public class ChatEngine
 
             case Topic.Unknown:
             default:
-                baseResponse = InputValidator.GetFallbackMessage(_user.Name);
+                // If sentiment was detected on an unknown topic, show a dedicated empathetic option menu!
+                if (!string.IsNullOrEmpty(detectedSentiment))
+                {
+                    baseResponse = ResponseLibrary.GetSentimentSupportiveMessage(detectedSentiment, _user.Name);
+                }
+                else
+                {
+                    baseResponse = InputValidator.GetFallbackMessage(_user.Name);
+                }
                 break;
         }
 
         // ── 7. Build prepends (Sentiment + Memory recall) ────────────────────
         string finalPrepend = string.Empty;
 
-        // Apply sentiment prepends for emotional empathy
-        if (!string.IsNullOrEmpty(detectedSentiment))
+        // Apply sentiment prepends for emotional empathy ONLY if we matched a known topic!
+        if (!string.IsNullOrEmpty(detectedSentiment) && currentTopic != Topic.Unknown)
         {
             finalPrepend += ResponseLibrary.GetSentimentPrepend(detectedSentiment, _user.Name);
         }
@@ -268,7 +276,8 @@ public class ChatEngine
         if (sanitisedInput.ContainsAnyKeyword("purpose", "what are you", "who are you", "what do you do", "introduce", "about"))
             return Topic.Purpose;
 
-        if (sanitisedInput.ContainsAnyKeyword("tip", "advice", "protect", "safe", "security", "cyber", "secure"))
+        // Expanded tips mapping to include general security threats like 'hack', 'breach', 'compromised', etc.
+        if (sanitisedInput.ContainsAnyKeyword("tip", "advice", "protect", "safe", "security", "cyber", "secure", "hack", "hacked", "hacking", "breach", "compromise", "compromised", "attack", "attacked"))
             return Topic.Tips;
 
         if (sanitisedInput.ContainsAnyKeyword("quiz", "test", "challenge", "trivia"))

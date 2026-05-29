@@ -169,6 +169,40 @@ public static class ResponseLibrary
             _ => string.Empty
         };
 
+    // ── 4b. Dedicated Sentiment-Supportive Fallback Responses ──────────────────
+
+    public static string GetSentimentSupportiveMessage(string sentiment, string userName = "Citizen") =>
+        sentiment.ToLower() switch
+        {
+            "worried" =>
+                $"It's completely understandable to feel worried, {userName}. Cyber threats can seem overwhelming, " +
+                "but you're taking the right step by getting informed!\n\n" +
+                "  To help you feel more secure and in control, would you like to explore one of these areas first?\n" +
+                "  • Type 'password' to learn how to create strong, secure logins\n" +
+                "  • Type 'phishing' to learn how to spot fake email and SMS scams\n" +
+                "  • Type 'privacy' to learn how to lock down your mobile apps\n" +
+                "  • Type 'tips' for general cybersecurity best practices",
+
+            "frustrated" =>
+                $"I completely understand your frustration, {userName}. Dealing with online risks and complex technical settings " +
+                "can be highly annoying. Let's make it simple!\n\n" +
+                "  Which of these basic, easy-to-follow security topics would you like to check out first?\n" +
+                "  • Type 'password' for simple, strong password tips\n" +
+                "  • Type 'phishing' to quickly spot email and SMS scams\n" +
+                "  • Type 'tips' for direct, plain-language security advice",
+
+            "curious" =>
+                $"That is an excellent, curious attitude, {userName}! Building digital defenses starts with asking questions. " +
+                "I am ready to explain anything!\n\n" +
+                "  Which cybersecurity topic are you most curious to learn about today?\n" +
+                "  • 'phishing' — How fake email and SMS scams work\n" +
+                "  • 'password' — How hackers crack passwords and how to stop them\n" +
+                "  • 'links' — How to verify links before clicking\n" +
+                "  • 'privacy' — How to protect your personal data",
+
+            _ => $"I understand you are looking for guidance, {userName}. Try typing 'phishing', 'password', 'links', or 'tips' to get started!"
+        };
+
     // ── 5. Memory Recall Prepends ─────────────────────────────────────────────
 
     public static string GetMemoryRecallPrepend(string topic, string userName = "Citizen") =>
