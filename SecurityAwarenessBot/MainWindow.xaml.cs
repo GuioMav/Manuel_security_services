@@ -70,11 +70,9 @@ namespace SecurityAwarenessBot
             OnboardingGrid.Visibility = Visibility.Collapsed;
             MainAppGrid.Visibility = Visibility.Visible;
 
-            // 3. Update sidebar text
-            TxtSidebarUser.Text = _user.Name;
-            TxtSidebarSessionId.Text = _user.SessionId;
-            TxtSidebarDuration.Text = "00m 00s";
-            TxtSidebarFavorite.Text = "None Stated Yet";
+            // 3. Update header status displays
+            TxtHeaderUser.Text = $"👤 User: {_user.Name}";
+            TxtHeaderDetails.Text = $"ID: {_user.SessionId} | Duration: 00m 00s | Interest: None";
 
             // 4. Initialize session elapsed duration timer
             _sessionTimer = new DispatcherTimer();
@@ -103,13 +101,8 @@ namespace SecurityAwarenessBot
         {
             if (_user != null)
             {
-                TxtSidebarDuration.Text = _user.GetSessionDuration();
-
-                // Live-update favorite topic if state changes
-                if (!string.IsNullOrEmpty(_user.FavoriteTopic))
-                {
-                    TxtSidebarFavorite.Text = _user.FavoriteTopic.ToUpper();
-                }
+                string fav = string.IsNullOrEmpty(_user.FavoriteTopic) ? "None" : _user.FavoriteTopic;
+                TxtHeaderDetails.Text = $"ID: {_user.SessionId} | Duration: {_user.GetSessionDuration()} | Interest: {fav}";
             }
         }
 
@@ -352,14 +345,13 @@ namespace SecurityAwarenessBot
 
         private void ChatScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            // Only auto scroll to bottom if content height is growing (new messages added)
             if (e.ExtentHeightChange > 0)
             {
                 ChatScrollViewer.ScrollToEnd();
             }
         }
 
-        // ── Sidebar Controls ──────────────────────────────────────────────────────
+        // ── Header Controls ──────────────────────────────────────────────────────
 
         private async void BtnHelp_Click(object sender, RoutedEventArgs e)
         {

@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Manuel Security Services MSS — Cybersecurity Awareness Bot"
-        Height="700" Width="1000"
+        Height="700" Width="900"
         WindowStartupLocation="CenterScreen"
         Background="#121212"
         Foreground="#E0E0E0"
@@ -67,151 +67,80 @@
 
     <Grid>
         <!-- MAIN APP LAYER -->
-        <Grid x:Name="MainAppGrid" Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <Grid x:Name="MainAppGrid" Background="#141414" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <!-- LEFT COLUMN: SIDEBAR -->
-            <Border Grid.Column="0" Background="#1A1A1A" BorderBrush="#2A2A2A" BorderThickness="0,0,1,0">
-                <Grid Margin="20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <!-- SUB-HEADER PANEL (NO SIDEBAR, FULL WIDTH HEADER) -->
+            <Border Grid.Row="0" Background="#1E1E1E" Padding="20,12" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                    <!-- Header Title -->
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
-                        <TextBlock Text="🛡️" FontSize="24" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="MSS SECURITY" FontSize="20" FontWeight="Bold" Foreground="#00D2FF" VerticalAlignment="Center"/>
+                    <!-- Top Left: App Title and Session Info Badge -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="🛡️" FontSize="20" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="MSS SECURITY" FontSize="16" FontWeight="Bold" Foreground="#00D2FF" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                        <Border Background="#252526" CornerRadius="4" Padding="8,3" BorderBrush="#2D2D2D" BorderThickness="1" VerticalAlignment="Center">
+                            <TextBlock x:Name="TxtHeaderDetails" Text="Session Details" FontSize="11" Foreground="#888888" FontFamily="Consolas" VerticalAlignment="Center"/>
+                        </Border>
                     </StackPanel>
 
-                    <!-- Monospace ASCII Art Logo -->
-                    <Border Grid.Row="1" Background="#121212" CornerRadius="8" Padding="10" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,5,0,20">
-                        <TextBlock FontFamily="Consolas, Monospace" FontSize="11" Foreground="#00D2FF" TextAlignment="Center" LineHeight="12">
-                            ███╗   ███╗ ███████╗ ███████╗<LineBreak/>
-                            ████╗ ████║ ██╔════╝ ██╔════╝<LineBreak/>
-                            ██╔████╔██║ ███████╗ ███████╗<LineBreak/>
-                            ██║╚██╔╝██║ ╚════██║ ╚════██║<LineBreak/>
-                            ██║ ╚═╝ ██║ ███████║ ███████║<LineBreak/>
-                            ╚═╝     ╚═╝ ╚══════╝ ╚══════╝<LineBreak/>
-                            <Span Foreground="Yellow" FontSize="8">PROFESSIONAL SECURITY INTELLIGENCE</Span>
-                        </TextBlock>
-                    </Border>
-
-                    <!-- Session Metadata Card -->
-                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
-                            <!-- User Name Card -->
-                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,15">
-                                <StackPanel>
-                                    <TextBlock Text="ACTIVE USER" FontSize="10" FontWeight="Bold" Foreground="#888888"/>
-                                    <TextBlock x:Name="TxtSidebarUser" Text="Alice" FontSize="16" FontWeight="SemiBold" Foreground="#FFFFFF" Margin="0,4,0,0"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Session ID Card -->
-                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,15">
-                                <StackPanel>
-                                    <TextBlock Text="SESSION ID" FontSize="10" FontWeight="Bold" Foreground="#888888"/>
-                                    <TextBlock x:Name="TxtSidebarSessionId" Text="ABC123D4" FontSize="16" FontWeight="Bold" Foreground="#FFFF00" Margin="0,4,0,0" FontFamily="Consolas"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Live Duration Card -->
-                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,15">
-                                <StackPanel>
-                                    <TextBlock Text="SESSION DURATION" FontSize="10" FontWeight="Bold" Foreground="#888888"/>
-                                    <TextBlock x:Name="TxtSidebarDuration" Text="00m 00s" FontSize="16" FontWeight="SemiBold" Foreground="#00D2FF" Margin="0,4,0,0"/>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Stored Memory Recall Stated Favorite Topic -->
-                            <Border Background="#252526" CornerRadius="8" Padding="12" BorderBrush="#2D2D2D" BorderThickness="1" Margin="0,0,0,15">
-                                <StackPanel>
-                                    <TextBlock Text="MEMORIZED USER INTEREST" FontSize="10" FontWeight="Bold" Foreground="#888888"/>
-                                    <TextBlock x:Name="TxtSidebarFavorite" Text="None Detected Yet" FontSize="14" FontWeight="SemiBold" Foreground="#00E676" Margin="0,4,0,0"/>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                    </ScrollViewer>
-
-                    <!-- Divider -->
-                    <Separator Grid.Row="3" Background="#2D2D2D" Height="1" Margin="0,15"/>
-
-                    <!-- Action Buttons -->
-                    <UniformGrid Grid.Row="4" Columns="2" Rows="1" Margin="0,0,0,10">
-                        <Button Content="HELP MENU" Style="{StaticResource ModernButton}" Margin="0,0,5,0" Click="BtnHelp_Click"/>
-                        <Button Content="EXIT SESSION" Style="{StaticResource ModernButton}" Margin="5,0,0,0" Click="BtnExit_Click"/>
-                    </UniformGrid>
+                    <!-- Top Right: User Profile and controls -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="#252526" CornerRadius="4" Padding="8,4" BorderBrush="#2D2D2D" BorderThickness="1" VerticalAlignment="Center" Margin="0,0,15,0">
+                            <TextBlock x:Name="TxtHeaderUser" Text="👤 Guest" FontSize="12" FontWeight="SemiBold" Foreground="#00E676" VerticalAlignment="Center"/>
+                        </Border>
+                        <!-- Mini Header Navigation -->
+                        <Button Content="HELP MENU" Style="{StaticResource ModernButton}" Padding="8,3" FontSize="11" Click="BtnHelp_Click" Margin="0,0,5,0"/>
+                        <Button Content="EXIT SESSION" Style="{StaticResource ModernButton}" Padding="8,3" FontSize="11" Click="BtnExit_Click"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- RIGHT COLUMN: CHAT WINDOW -->
-            <Grid Grid.Column="1" Background="#141414">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <!-- MESSAGE LOG CONTAINER -->
+            <ScrollViewer x:Name="ChatScrollViewer" Grid.Row="1" Padding="20,15" ScrollChanged="ChatScrollViewer_ScrollChanged">
+                <StackPanel x:Name="ChatPanel" Orientation="Vertical" Margin="0,0,0,20"/>
+            </ScrollViewer>
 
-                <!-- Sub-Header Status Panel -->
-                <Border Grid.Row="0" Background="#1E1E1E" Padding="15,12" BorderBrush="#2A2A2A" BorderThickness="0,0,0,1">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <Border Background="#00E676" Width="8" Height="8" CornerRadius="4" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <TextBlock Text="MSS Secure Chat Assistant Online" FontSize="13" Foreground="#888888" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" Text="v2.0.0-gui" FontSize="11" Foreground="#444444" FontFamily="Consolas" VerticalAlignment="Center"/>
-                    </Grid>
-                </Border>
+            <!-- BOTTOM CHAT INPUT PANEL -->
+            <Border Grid.Row="2" Background="#1E1E1E" Padding="20,15" BorderBrush="#2A2A2A" BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
 
-                <!-- Message Log scroll panel -->
-                <ScrollViewer x:Name="ChatScrollViewer" Grid.Row="1" Padding="15" ScrollChanged="ChatScrollViewer_ScrollChanged">
-                    <StackPanel x:Name="ChatPanel" Orientation="Vertical" Margin="0,0,0,20"/>
-                </ScrollViewer>
+                    <!-- Input TextBox -->
+                    <Border Grid.Column="0" Background="#121212" BorderBrush="#2D2D2D" BorderThickness="1" CornerRadius="6" Padding="10,2">
+                        <TextBox x:Name="TxtChatInput"
+                                 Background="Transparent"
+                                 Foreground="#E0E0E0"
+                                 BorderThickness="0"
+                                 CaretBrush="#00D2FF"
+                                 FontSize="14"
+                                 VerticalAlignment="Center"
+                                 GotFocus="TxtChatInput_GotFocus"
+                                 LostFocus="TxtChatInput_LostFocus"
+                                 KeyDown="TxtChatInput_KeyDown"/>
+                    </Border>
 
-                <!-- Bottom Chat Input Panel -->
-                <Border Grid.Row="2" Background="#1E1E1E" Padding="15" BorderBrush="#2A2A2A" BorderThickness="0,1,0,0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Input TextBox -->
-                        <Border Grid.Column="0" Background="#121212" BorderBrush="#2D2D2D" BorderThickness="1" CornerRadius="6" Padding="10,2">
-                            <TextBox x:Name="TxtChatInput"
-                                     Background="Transparent"
-                                     Foreground="#E0E0E0"
-                                     BorderThickness="0"
-                                     CaretBrush="#00D2FF"
-                                     FontSize="14"
-                                     VerticalAlignment="Center"
-                                     GotFocus="TxtChatInput_GotFocus"
-                                     LostFocus="TxtChatInput_LostFocus"
-                                     KeyDown="TxtChatInput_KeyDown"/>
-                        </Border>
-
-                        <!-- Send Button -->
-                        <Button Grid.Column="1"
-                                x:Name="BtnSend"
-                                Content="SEND"
-                                Style="{StaticResource PrimaryButton}"
-                                Margin="10,0,0,0"
-                                Height="40"
-                                Click="BtnSend_Click"/>
-                    </Grid>
-                </Border>
-            </Grid>
+                    <!-- Send Button -->
+                    <Button Grid.Column="1"
+                            x:Name="BtnSend"
+                            Content="SEND"
+                            Style="{StaticResource PrimaryButton}"
+                            Margin="10,0,0,0"
+                            Height="40"
+                            Click="BtnSend_Click"/>
+                </Grid>
+            </Border>
         </Grid>
 
         <!-- OVERLAY: USER ONBOARDING POPUP -->
