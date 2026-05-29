@@ -83,13 +83,10 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Top Left: App Title and Session Info Badge -->
+                    <!-- Top Left: App Title -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="🛡️" FontSize="20" Margin="0,0,8,0" VerticalAlignment="Center"/>
                         <TextBlock Text="MSS SECURITY" FontSize="16" FontWeight="Bold" Foreground="#00D2FF" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                        <Border Background="#252526" CornerRadius="4" Padding="8,3" BorderBrush="#2D2D2D" BorderThickness="1" VerticalAlignment="Center">
-                            <TextBlock x:Name="TxtHeaderDetails" Text="Session Details" FontSize="11" Foreground="#888888" FontFamily="Consolas" VerticalAlignment="Center"/>
-                        </Border>
                     </StackPanel>
 
                     <!-- Top Right: User Profile and controls -->

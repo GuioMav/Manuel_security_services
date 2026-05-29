@@ -5,7 +5,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
-using System.Windows.Threading;
 using SecurityAwarenessBot.Core;
 using SecurityAwarenessBot.Models;
 using SecurityAwarenessBot.Utils;
@@ -19,7 +18,6 @@ namespace SecurityAwarenessBot
     {
         private User? _user;
         private ChatEngine? _engine;
-        private DispatcherTimer? _sessionTimer;
         private readonly string _inputPlaceholder = "Ask me anything... (e.g. phishing, passwords, privacy, links)";
         private bool _isBotTyping = false;
 
@@ -72,22 +70,15 @@ namespace SecurityAwarenessBot
 
             // 3. Update header status displays
             TxtHeaderUser.Text = $"👤 User: {_user.Name}";
-            TxtHeaderDetails.Text = $"ID: {_user.SessionId} | Duration: 00m 00s | Interest: None";
 
-            // 4. Initialize session elapsed duration timer
-            _sessionTimer = new DispatcherTimer();
-            _sessionTimer.Interval = TimeSpan.FromSeconds(1);
-            _sessionTimer.Tick += SessionTimer_Tick;
-            _sessionTimer.Start();
-
-            // 5. Initialize Chat Input Box with placeholder
+            // 4. Initialize Chat Input Box with placeholder
             TxtChatInput.Text = _inputPlaceholder;
             TxtChatInput.Foreground = new SolidColorBrush(Color.FromRgb(0x88, 0x88, 0x88));
 
-            // 6. Play Welcome Audio (Windows sound playback / Programmatic synth tone fallback)
+            // 5. Play Welcome Audio (Windows sound playback / Programmatic synth tone fallback)
             await AudioPlayer.PlayWelcomeAsync();
 
-            // 7. Add bot opening messages with typewriter animation
+            // 6. Add bot opening messages with typewriter animation
             await AddBotMessageAsync($"Hello, {_user.Name}! I am Manuel security services MSS, your professional cybersecurity assistant.");
             await AddBotMessageAsync("My mission is to help South African citizens stay safe online.\n\n" +
                                      "  • Type 'phishing' to learn about mail & message scams.\n" +
@@ -95,15 +86,6 @@ namespace SecurityAwarenessBot
                                      "  • Type 'privacy' to learn about app permissions & privacy safety.\n" +
                                      "  • Type 'quiz' to test your cybersecurity knowledge!\n\n" +
                                      "How can I assist you today?");
-        }
-
-        private void SessionTimer_Tick(object? sender, EventArgs e)
-        {
-            if (_user != null)
-            {
-                string fav = string.IsNullOrEmpty(_user.FavoriteTopic) ? "None" : _user.FavoriteTopic;
-                TxtHeaderDetails.Text = $"ID: {_user.SessionId} | Duration: {_user.GetSessionDuration()} | Interest: {fav}";
-            }
         }
 
         // ── Input Placeholder & Key Controls ─────────────────────────────────────
@@ -165,7 +147,6 @@ namespace SecurityAwarenessBot
                 {
                     await AddBotMessageAsync($"Goodbye, {_user.Name}! Stay vigilant and stay safe online. 🛡️");
                     await AddBotMessageAsync($"Secure session closed. Total duration: {_user.GetSessionDuration()}");
-                    _sessionTimer?.Stop();
                     await Task.Delay(1500);
                     Application.Current.Shutdown();
                 }
@@ -386,7 +367,6 @@ namespace SecurityAwarenessBot
             else if (command == "__EXIT__")
             {
                 await AddBotMessageAsync($"Goodbye, {_user?.Name ?? "Citizen"}! Stay vigilant and stay safe online. 🛡️");
-                _sessionTimer?.Stop();
                 await Task.Delay(1500);
                 Application.Current.Shutdown();
             }
