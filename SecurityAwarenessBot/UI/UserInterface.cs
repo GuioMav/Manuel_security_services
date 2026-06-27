@@ -170,7 +170,7 @@ public static class UserInterface
         Console.WriteLine();
     }
 
-    // ── 6. Status message helpers ─────────────────────────────────────────────
+    // ── 6. Status message helpers ───────────────────────────────────────────────────────────────────────────────────────────────────────
 
     /// <summary>Displays an informational (cyan) message.</summary>
     public static void PrintInfo(string message) =>
@@ -188,7 +188,7 @@ public static class UserInterface
     public static void PrintError(string message) =>
         WriteLineColoured($"  ✖  {message}", ConsoleColor.Red);
 
-    // ── 7. Help menu ──────────────────────────────────────────────────────────
+    // ── 7. Help menu ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
     /// <summary>
     /// Prints a formatted, colour-coded list of all topics the chatbot supports.

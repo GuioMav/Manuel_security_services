@@ -18,6 +18,7 @@
       It is cross-platform at the package level; the AudioPlayer class uses a
       RuntimeInformation.IsOSPlatform(Windows) guard so it is only CALLED on Windows.
     -->
+    <PackageReference Include="MySql.Data" Version="9.7.0" />
     <PackageReference Include="System.Windows.Extensions" Version="9.0.0" />
   </ItemGroup>
 

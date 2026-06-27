@@ -24,6 +24,7 @@ namespace SecurityAwarenessBot
         public MainWindow()
         {
             InitializeComponent();
+            DatabaseHelper.InitializeDatabase();
             SetupOnboardingState();
         }
 
@@ -373,6 +374,45 @@ namespace SecurityAwarenessBot
 
             _isBotTyping = false;
             BtnSend.IsEnabled = true;
+        }
+
+        // ── Task Panel Controls ──────────────────────────────────────────────────
+
+        private void BtnToggleTasks_Click(object sender, RoutedEventArgs e)
+        {
+            if (TasksPanel.Visibility == Visibility.Visible)
+            {
+                TasksPanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                TasksPanel.Visibility = Visibility.Visible;
+                LoadTasks();
+            }
+        }
+
+        private void LoadTasks()
+        {
+            var tasks = DatabaseHelper.GetTasks();
+            TasksItemsControl.ItemsSource = tasks;
+        }
+
+        private void BtnCompleteTask_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int taskId)
+            {
+                DatabaseHelper.MarkTaskCompleted(taskId);
+                LoadTasks();
+            }
+        }
+
+        private void BtnDeleteTask_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is int taskId)
+            {
+                DatabaseHelper.DeleteTask(taskId);
+                LoadTasks();
+            }
         }
     }
 }
