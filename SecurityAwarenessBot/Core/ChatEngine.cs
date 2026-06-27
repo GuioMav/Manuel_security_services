@@ -142,39 +142,71 @@ public class ChatEngine
             detectedSentiment = "curious";
         }
 
-        // ── 5. NLP Task & Reminder Extraction ───────────────────────────────
-        var taskMatch = System.Text.RegularExpressions.Regex.Match(clean, @"(?i)(?:add a task|add task|remind me)(?: to)? (.+?)(?: on| tomorrow| in| for|$)");
-        if (taskMatch.Success)
-        {
-            string taskName = taskMatch.Groups[1].Value.Trim();
-            
-            // Basic date extraction for NLP
-            DateTime? reminderDate = null;
-            if (clean.Contains("tomorrow"))
-                reminderDate = DateTime.Now.AddDays(1);
-            else if (clean.Contains("in 2 days"))
-                reminderDate = DateTime.Now.AddDays(2);
-            else if (clean.Contains("in 3 days"))
-                reminderDate = DateTime.Now.AddDays(3);
-            else if (clean.Contains("in a week"))
-                reminderDate = DateTime.Now.AddDays(7);
+        // ── 5. NLP Intent Detection via NlpParser ────────────────────────────
+        var nlp = NlpParser.Analyse(rawInput);
 
-            var newTask = new TaskItem { Title = char.ToUpper(taskName[0]) + taskName.Substring(1), ReminderDate = reminderDate, IsCompleted = false };
-            DatabaseHelper.AddTask(newTask);
-            
-            string responseText = $"Task added: '{newTask.Title}'";
-            if (reminderDate.HasValue)
+        if (nlp.Intent == UserIntent.AddTask || nlp.Intent == UserIntent.SetReminder)
+        {
+            string taskName = string.IsNullOrWhiteSpace(nlp.TaskText) ? "Cybersecurity Task" : nlp.TaskText;
+            // Capitalise first letter
+            taskName = char.ToUpper(taskName[0]) + taskName[1..];
+
+            var newTask = new TaskItem
             {
-                responseText += $" (Reminder set for {reminderDate.Value:MMM dd})";
-                ActivityLogger.LogAction($"Reminder set: '{newTask.Title}' on {reminderDate.Value:MMM dd}");
+                Title        = taskName,
+                Description  = string.Empty,
+                ReminderDate = nlp.ReminderAt,
+                IsCompleted  = false
+            };
+            DatabaseHelper.AddTask(newTask);
+
+            string responseText = $"Task added: '{newTask.Title}'.";
+            if (nlp.ReminderAt.HasValue)
+            {
+                responseText += $"\n  ⏰  Reminder set for {nlp.ReminderAt.Value:dddd, MMM dd} at {nlp.ReminderAt.Value:HH:mm}.";
+                ActivityLogger.LogAction($"Task added with reminder: '{newTask.Title}' on {nlp.ReminderAt.Value:MMM dd, yyyy}");
             }
             else
             {
-                responseText += ". Would you like to set a reminder for this task?";
+                responseText += "\n  Would you like to set a reminder? (e.g. \"Remind me in 3 days\")";
                 ActivityLogger.LogAction($"Task added: '{newTask.Title}' (no reminder set)");
             }
 
+            await Task.Delay(250);
             return "  ✔  " + responseText;
+        }
+
+        if (nlp.Intent == UserIntent.ShowTasks)
+        {
+            ActivityLogger.LogAction("User requested task list via chat.");
+            await Task.Delay(250);
+            var tasks = DatabaseHelper.GetTasks()
+                .Where(t => !t.IsCompleted).ToList();
+            if (tasks.Count == 0)
+                return "  📋  You have no active tasks. Type 'add task to [something]' to get started!";
+
+            var sb = new System.Text.StringBuilder("  📋  Your active tasks:\n\n");
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                sb.Append($"  {i + 1}. {tasks[i].Title}");
+                if (tasks[i].ReminderDate.HasValue)
+                    sb.Append($" — ⏰ Reminder: {tasks[i].ReminderDate!.Value:MMM dd, yyyy}");
+                sb.AppendLine();
+            }
+            sb.AppendLine("\n  Click the TASKS button in the header to complete or delete tasks.");
+            return sb.ToString().TrimEnd();
+        }
+
+        if (nlp.Intent == UserIntent.ShowActivityLog)
+        {
+            ActivityLogger.LogAction("User requested activity log.");
+            await Task.Delay(250);
+            return ActivityLogger.GetRecentLogs();
+        }
+
+        if (nlp.Intent == UserIntent.StartQuiz)
+        {
+            // Route to quiz through the normal classifier
         }
 
         // ── 6. Conversation Flow: Context-based Continuation Routing ────────
