@@ -28,6 +28,7 @@ public enum Topic
     SmallTalk,
     Scam,
     Privacy,
+    ActivityLog,
     Unknown
 }
 
@@ -136,7 +137,42 @@ public class ChatEngine
             detectedSentiment = "curious";
         }
 
-        // ── 5. Conversation Flow: Context-based Continuation Routing ────────
+        // ── 5. NLP Task & Reminder Extraction ───────────────────────────────
+        var taskMatch = System.Text.RegularExpressions.Regex.Match(clean, @"(?i)(?:add a task|add task|remind me)(?: to)? (.+?)(?: on| tomorrow| in| for|$)");
+        if (taskMatch.Success)
+        {
+            string taskName = taskMatch.Groups[1].Value.Trim();
+            
+            // Basic date extraction for NLP
+            DateTime? reminderDate = null;
+            if (clean.Contains("tomorrow"))
+                reminderDate = DateTime.Now.AddDays(1);
+            else if (clean.Contains("in 2 days"))
+                reminderDate = DateTime.Now.AddDays(2);
+            else if (clean.Contains("in 3 days"))
+                reminderDate = DateTime.Now.AddDays(3);
+            else if (clean.Contains("in a week"))
+                reminderDate = DateTime.Now.AddDays(7);
+
+            var newTask = new TaskItem { Title = char.ToUpper(taskName[0]) + taskName.Substring(1), ReminderDate = reminderDate, IsCompleted = false };
+            DatabaseHelper.AddTask(newTask);
+            
+            string responseText = $"Task added: '{newTask.Title}'";
+            if (reminderDate.HasValue)
+            {
+                responseText += $" (Reminder set for {reminderDate.Value:MMM dd})";
+                ActivityLogger.LogAction($"Reminder set: '{newTask.Title}' on {reminderDate.Value:MMM dd}");
+            }
+            else
+            {
+                responseText += ". Would you like to set a reminder for this task?";
+                ActivityLogger.LogAction($"Task added: '{newTask.Title}' (no reminder set)");
+            }
+
+            return "  ✔  " + responseText;
+        }
+
+        // ── 6. Conversation Flow: Context-based Continuation Routing ────────
         bool isContinuation = clean.ContainsAnyKeyword("another", "more", "explain", "continue", "detail", "next");
         Topic currentTopic;
 
@@ -152,7 +188,7 @@ public class ChatEngine
         // Introduce a brief async pause to simulate artificial "thinking"
         await Task.Delay(350);
 
-        // ── 6. Select base educational response ──────────────────────────────
+        // ── 7. Select base educational response ──────────────────────────────
         string baseResponse = string.Empty;
 
         switch (currentTopic)
@@ -208,6 +244,12 @@ public class ChatEngine
                 baseResponse = ResponseLibrary.GetSmallTalkResponse(_user.Name);
                 break;
 
+            case Topic.ActivityLog:
+                _lastTopic = Topic.ActivityLog;
+                baseResponse = ActivityLogger.GetRecentLogs();
+                ActivityLogger.LogAction("User requested activity log.");
+                break;
+
             case Topic.Unknown:
             default:
                 // If sentiment was detected on an unknown topic, show a dedicated empathetic option menu!
@@ -222,7 +264,7 @@ public class ChatEngine
                 break;
         }
 
-        // ── 7. Build prepends (Sentiment + Memory recall) ────────────────────
+        // ── 8. Build prepends (Sentiment + Memory recall) ────────────────────
         string finalPrepend = string.Empty;
 
         // Apply sentiment prepends for emotional empathy ONLY if we matched a known topic!
@@ -286,6 +328,9 @@ public class ChatEngine
         if (sanitisedInput.ContainsAnyKeyword("how are you", "how's it going", "hello", "hi", "hey", "greetings"))
             return Topic.SmallTalk;
 
+        if (sanitisedInput.ContainsAnyKeyword("activity log", "what have you done", "recent action", "history"))
+            return Topic.ActivityLog;
+
         return Topic.Unknown;
     }
 
@@ -297,6 +342,11 @@ public class ChatEngine
         {
             _quizState = QuizState.NotStarted;
             _user.QuizScore = 0;
+        }
+
+        if (_quizState == QuizState.NotStarted)
+        {
+            ActivityLogger.LogAction("Quiz started by user.");
         }
 
         return _quizState switch
@@ -385,6 +435,8 @@ public class ChatEngine
         string fb = ResponseLibrary.GetQuizQuestion5Answer(answer, _user.Name);
         _quizState = QuizState.Complete;
         
+        ActivityLogger.LogAction($"Quiz completed - Final score: {_user.QuizScore} / 5");
+
         string completionSummary = 
             $"\n\n  🎉  Quiz complete, {_user.Name}! Well done for completing the challenge.\n" +
             $"      Your final score is: {_user.QuizScore} / 5\n\n" +
