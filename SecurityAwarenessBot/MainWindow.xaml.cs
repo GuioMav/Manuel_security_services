@@ -85,7 +85,10 @@ namespace SecurityAwarenessBot
                                      "  • Type 'phishing' to learn about mail & message scams.\n" +
                                      "  • Type 'password' to learn about strong password habits.\n" +
                                      "  • Type 'privacy' to learn about app permissions & privacy safety.\n" +
-                                     "  • Type 'quiz' to test your cybersecurity knowledge!\n\n" +
+                                     "  • Type 'quiz' to test your cybersecurity knowledge (10 questions!).\n" +
+                                     "  • Type 'add task to [something]' to add a task to your Task Panel.\n" +
+                                     "  • Type 'activity log' to view recent actions the bot has taken.\n" +
+                                     "  • Click the 'TASKS' button in the header to view and manage your tasks.\n\n" +
                                      "How can I assist you today?");
         }
 
@@ -153,13 +156,21 @@ namespace SecurityAwarenessBot
                 }
                 else if (reply == "__HELP__")
                 {
-                    await AddBotMessageAsync("📋  MSS Bot Available Topics Menu:\n\n" +
-                                             "  • phishing — Learn about fake emails, SMS scams, & how to spot them.\n" +
-                                             "  • password — Password security best practices and credentials manager tips.\n" +
-                                             "  • links — Spotting malicious URLs & safe verification checkers.\n" +
-                                             "  • tips — General device & network hygiene for South Africans.\n" +
-                                             "  • privacy — Information encryption and mobile app permission controls.\n" +
-                                             "  • quiz — Challenge yourself with our 5-turn cybersecurity quiz.\n" +
+                    await AddBotMessageAsync("📋  MSS Bot — Full Feature Menu:\n\n" +
+                                             "  📚 Cybersecurity Topics:\n" +
+                                             "  • phishing — Fake emails, SMS scams & how to spot them.\n" +
+                                             "  • password — Password security best practices.\n" +
+                                             "  • links — Spotting malicious URLs safely.\n" +
+                                             "  • tips — General device & network hygiene.\n" +
+                                             "  • privacy — App permissions & data protection.\n\n" +
+                                             "  🎮 Mini-Game:\n" +
+                                             "  • quiz — 10-question mixed cybersecurity challenge.\n\n" +
+                                             "  📋 Task Assistant (NLP):\n" +
+                                             "  • 'Add task to [title]' — Add a cybersecurity task.\n" +
+                                             "  • 'Remind me to [title] tomorrow/in 3 days' — Task with reminder.\n" +
+                                             "  • Click TASKS button to view, complete, or delete tasks.\n\n" +
+                                             "  📜 Activity Log:\n" +
+                                             "  • 'Show activity log' or 'What have you done?' — View recent bot actions.\n\n" +
                                              "  • exit — Gracefully end your session.");
                 }
                 else
@@ -356,13 +367,21 @@ namespace SecurityAwarenessBot
 
             if (command == "__HELP__")
             {
-                await AddBotMessageAsync("📋  MSS Bot Available Topics Menu:\n\n" +
-                                         "  • phishing — Learn about fake emails, SMS scams, & how to spot them.\n" +
-                                         "  • password — Password security best practices and credentials manager tips.\n" +
-                                         "  • links — Spotting malicious URLs & safe verification checkers.\n" +
-                                         "  • tips — General device & network hygiene for South Africans.\n" +
-                                         "  • privacy — Information encryption and mobile app permission controls.\n" +
-                                         "  • quiz — Challenge yourself with our 5-turn cybersecurity quiz.\n" +
+                await AddBotMessageAsync("📋  MSS Bot — Full Feature Menu:\n\n" +
+                                         "  📚 Cybersecurity Topics:\n" +
+                                         "  • phishing — Fake emails, SMS scams & how to spot them.\n" +
+                                         "  • password — Password security best practices.\n" +
+                                         "  • links — Spotting malicious URLs safely.\n" +
+                                         "  • tips — General device & network hygiene.\n" +
+                                         "  • privacy — App permissions & data protection.\n\n" +
+                                         "  🎮 Mini-Game:\n" +
+                                         "  • quiz — 10-question mixed cybersecurity challenge.\n\n" +
+                                         "  📋 Task Assistant (NLP):\n" +
+                                         "  • 'Add task to [title]' — Add a cybersecurity task.\n" +
+                                         "  • 'Remind me to [title] tomorrow/in 3 days' — Task with reminder.\n" +
+                                         "  • Click TASKS button to view, complete, or delete tasks.\n\n" +
+                                         "  📜 Activity Log:\n" +
+                                         "  • 'Show activity log' or 'What have you done?' — View recent bot actions.\n\n" +
                                          "  • exit — Gracefully end your session.");
             }
             else if (command == "__EXIT__")

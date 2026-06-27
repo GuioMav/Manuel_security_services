@@ -45,6 +45,11 @@ public enum QuizState
     Question3,
     Question4,
     Question5,
+    Question6,
+    Question7,
+    Question8,
+    Question9,
+    Question10,
     Complete
 }
 
@@ -369,6 +374,21 @@ public class ChatEngine
             QuizState.Question5 =>
                 ResponseLibrary.GetQuizQuestion5(_user.Name),
 
+            QuizState.Question6 =>
+                ResponseLibrary.GetQuizQuestion6(_user.Name),
+
+            QuizState.Question7 =>
+                ResponseLibrary.GetQuizQuestion7(_user.Name),
+
+            QuizState.Question8 =>
+                ResponseLibrary.GetQuizQuestion8(_user.Name),
+
+            QuizState.Question9 =>
+                ResponseLibrary.GetQuizQuestion9(_user.Name),
+
+            QuizState.Question10 =>
+                ResponseLibrary.GetQuizQuestion10(_user.Name),
+
             _ => ResponseLibrary.GetQuizIntroResponse(_user.Name)
         };
     }
@@ -393,6 +413,11 @@ public class ChatEngine
             QuizState.Question3 => AnswerQ3(answer),
             QuizState.Question4 => AnswerQ4(answer),
             QuizState.Question5 => AnswerQ5(answer),
+            QuizState.Question6 => AnswerQ6(answer),
+            QuizState.Question7 => AnswerQ7(answer),
+            QuizState.Question8 => AnswerQ8(answer),
+            QuizState.Question9 => AnswerQ9(answer),
+            QuizState.Question10 => AnswerQ10(answer),
             _ => InputValidator.GetFallbackMessage(_user.Name)
         };
     }
@@ -433,13 +458,60 @@ public class ChatEngine
     {
         if (answer.ToUpper() == "D") _user.QuizScore++;
         string fb = ResponseLibrary.GetQuizQuestion5Answer(answer, _user.Name);
+        _quizState = QuizState.Question6;
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion6(_user.Name);
+    }
+
+    private string AnswerQ6(string answer)
+    {
+        if (answer.ToUpper() == "B") _user.QuizScore++;
+        string fb = ResponseLibrary.GetQuizQuestion6Answer(answer, _user.Name);
+        _quizState = QuizState.Question7;
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion7(_user.Name);
+    }
+
+    private string AnswerQ7(string answer)
+    {
+        if (answer.ToUpper() == "A") _user.QuizScore++;
+        string fb = ResponseLibrary.GetQuizQuestion7Answer(answer, _user.Name);
+        _quizState = QuizState.Question8;
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion8(_user.Name);
+    }
+
+    private string AnswerQ8(string answer)
+    {
+        if (answer.ToUpper() == "A") _user.QuizScore++;
+        string fb = ResponseLibrary.GetQuizQuestion8Answer(answer, _user.Name);
+        _quizState = QuizState.Question9;
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion9(_user.Name);
+    }
+
+    private string AnswerQ9(string answer)
+    {
+        if (answer.ToUpper() == "B") _user.QuizScore++;
+        string fb = ResponseLibrary.GetQuizQuestion9Answer(answer, _user.Name);
+        _quizState = QuizState.Question10;
+        return fb + "\n\n" + ResponseLibrary.GetQuizQuestion10(_user.Name);
+    }
+
+    private string AnswerQ10(string answer)
+    {
+        if (answer.ToUpper() == "B") _user.QuizScore++;
+        string fb = ResponseLibrary.GetQuizQuestion10Answer(answer, _user.Name);
         _quizState = QuizState.Complete;
         
-        ActivityLogger.LogAction($"Quiz completed - Final score: {_user.QuizScore} / 5");
+        ActivityLogger.LogAction($"Quiz completed - Final score: {_user.QuizScore} / 10");
+
+        string feedbackRank = _user.QuizScore switch {
+            >= 9 => "🏆 Outstanding! You're a cybersecurity pro!",
+            >= 6 => "👍 Good job! You have a solid understanding.",
+            _ => "📚 Keep learning to stay safe online!"
+        };
 
         string completionSummary = 
             $"\n\n  🎉  Quiz complete, {_user.Name}! Well done for completing the challenge.\n" +
-            $"      Your final score is: {_user.QuizScore} / 5\n\n" +
+            $"      Your final score is: {_user.QuizScore} / 10\n" +
+            $"      {feedbackRank}\n\n" +
             "  Remember: knowledge is your best defence against cybercrime.\n" +
             "  Type 'tips', 'password', or 'links' to learn more, or 'exit' to end your session.";
 

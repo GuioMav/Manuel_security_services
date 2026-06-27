@@ -334,4 +334,112 @@ public static class ResponseLibrary
 
         return feedback;
     }
+    // ── 7. Extended Quiz Questions 6–10 ──────────────────────────────────────
+
+    // Q6: True/False — Social Engineering
+    public static string GetQuizQuestion6(string userName = "Citizen") =>
+        $"  ❓  Question 6 of 10 — {userName} (True / False):\n\n" +
+        "  \"Social engineering attacks rely on hacking software, not human interaction.\"\n\n" +
+        "  • A) True\n" +
+        "  • B) False\n\n" +
+        "  Type A or B:";
+
+    public static string GetQuizQuestion6Answer(string answer, string userName = "Citizen") =>
+        answer.ToUpper().Trim() switch
+        {
+            "B" =>
+                $"✔  Correct, {userName}! Social engineering relies entirely on manipulating PEOPLE — " +
+                "not software vulnerabilities. Attackers trick humans through trust, urgency, or impersonation.",
+
+            _ =>
+                $"⚠  Incorrect, {userName}. The answer is FALSE (B). Social engineering targets human psychology, " +
+                "not computer systems directly. Phishing and pretexting are classic examples."
+        };
+
+    // Q7: MCQ — Two-Factor Authentication
+    public static string GetQuizQuestion7(string userName = "Citizen") =>
+        $"  ❓  Question 7 of 10 — {userName}:\n\n" +
+        "  What does two-factor authentication (2FA) protect against?\n\n" +
+        "  • A) Someone logging in with only your password\n" +
+        "  • B) Viruses infecting your computer\n" +
+        "  • C) Your Wi-Fi being hacked\n" +
+        "  • D) Spam emails reaching your inbox\n\n" +
+        "  Type A, B, C, or D:";
+
+    public static string GetQuizQuestion7Answer(string answer, string userName = "Citizen") =>
+        answer.ToUpper().Trim() switch
+        {
+            "A" =>
+                $"✔  Correct, {userName}! 2FA ensures that even if a criminal steals your password, " +
+                "they cannot log into your account without the second factor (like an OTP sent to your phone).",
+
+            _ =>
+                $"⚠  Not quite, {userName}. The answer is A. 2FA blocks login attempts that use only your password, " +
+                "adding a critical extra layer of protection. Enable it wherever possible!"
+        };
+
+    // Q8: True/False — Public Wi-Fi
+    public static string GetQuizQuestion8(string userName = "Citizen") =>
+        $"  ❓  Question 8 of 10 — {userName} (True / False):\n\n" +
+        "  \"It is safe to do online banking on public Wi-Fi as long as the website uses HTTPS.\"\n\n" +
+        "  • A) False\n" +
+        "  • B) True\n\n" +
+        "  Type A or B:";
+
+    public static string GetQuizQuestion8Answer(string answer, string userName = "Citizen") =>
+        answer.ToUpper().Trim() switch
+        {
+            "A" =>
+                $"✔  Correct, {userName}! Public Wi-Fi is NEVER safe for banking. Attackers can perform " +
+                "'man-in-the-middle' attacks on public networks, intercepting your data even on HTTPS connections. " +
+                "Always use mobile data or a trusted VPN for sensitive transactions.",
+
+            _ =>
+                $"⚠  Incorrect, {userName}. The answer is FALSE (A). HTTPS encrypts data in transit, " +
+                "but public Wi-Fi can still be monitored. Avoid banking on public networks — use mobile data instead."
+        };
+
+    // Q9: MCQ — Ransomware
+    public static string GetQuizQuestion9(string userName = "Citizen") =>
+        $"  ❓  Question 9 of 10 — {userName}:\n\n" +
+        "  What is ransomware?\n\n" +
+        "  • A) Software that speeds up your internet connection\n" +
+        "  • B) Malware that encrypts your files and demands payment to restore them\n" +
+        "  • C) A tool used by antivirus companies to detect threats\n" +
+        "  • D) A type of spam email filter\n\n" +
+        "  Type A, B, C, or D:";
+
+    public static string GetQuizQuestion9Answer(string answer, string userName = "Citizen") =>
+        answer.ToUpper().Trim() switch
+        {
+            "B" =>
+                $"✔  Correct, {userName}! Ransomware locks your files with strong encryption and demands payment " +
+                "(usually cryptocurrency) to unlock them. Backups are your best defense against ransomware attacks.",
+
+            _ =>
+                $"⚠  Not quite, {userName}. The correct answer is B. Ransomware is malicious software that holds " +
+                "your files hostage. Always maintain offline backups and never pay the ransom — it is not guaranteed to work."
+        };
+
+    // Q10: MCQ — Safe Password Habits
+    public static string GetQuizQuestion10(string userName = "Citizen") =>
+        $"  ❓  Final Question — 10 of 10 — {userName}:\n\n" +
+        "  Which of the following is the BEST practice when creating a new online account?\n\n" +
+        "  • A) Use the same password you use for your email to remember it easily\n" +
+        "  • B) Create a unique, strong password and store it in a password manager\n" +
+        "  • C) Use your ID number so you can always remember it\n" +
+        "  • D) Use a simple password like '1234' and change it later\n\n" +
+        "  Type A, B, C, or D:";
+
+    public static string GetQuizQuestion10Answer(string answer, string userName = "Citizen") =>
+        answer.ToUpper().Trim() switch
+        {
+            "B" =>
+                $"✔  Excellent, {userName}! A unique strong password per account stored in a trusted password manager " +
+                "(like Bitwarden or 1Password) is the gold standard. This prevents credential stuffing attacks.",
+
+            _ =>
+                $"⚠  Not quite, {userName}. The correct answer is B. Reusing passwords is extremely dangerous — " +
+                "if one account is breached, ALL your accounts become vulnerable. Use a password manager!"
+        };
 }
